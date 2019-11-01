@@ -1,3 +1,3 @@
-module github.com/ndunyu/yuri/v1
+module github.com/ndunyu/yuri
 
 go 1.13
