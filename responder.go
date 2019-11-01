@@ -1,6 +1,6 @@
 /*this will send  back the payload to the user*/
 
-package main
+package yuri
 
 import (
 	"encoding/json"

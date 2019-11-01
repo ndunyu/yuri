@@ -1,7 +1,7 @@
 /*this package will do all the operations regarding
 
 the http request methods*/
-package main
+package yuri
 
 import (
 	"encoding/json"
