@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"reflect"
+	"strconv"
 )
 
 type Pagination struct {
@@ -88,5 +89,31 @@ func RequestBody(r *http.Request, item interface{}) *ErrResponse {
 	}
 	defer r.Body.Close()
 	return nil
+
+
+}
+
+
+//this will get the size
+//and the page from request if they exist
+//else use the default
+func (p *Pagination) GetPagination(r *http.Request) {
+	if r.URL.Query().Get("page") != "" {
+		p.Page, _ = strconv.Atoi(r.URL.Query().Get("page"))
+		//p.Page = page
+
+	}
+
+	if r.URL.Query().Get("size") != "" {
+		p.Size, _ = strconv.Atoi(r.URL.Query().Get("size"))
+		///p.Size = size
+
+	}
+	if p.Page > 0 {
+		p.Offset = (p.Page - 1) * p.Size
+
+	} else {
+		p.Offset = 0
+	}
 
 }
