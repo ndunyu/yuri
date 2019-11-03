@@ -9,6 +9,17 @@ import (
 	"reflect"
 )
 
+type Pagination struct {
+	Page   int
+	Size   int
+	Offset int
+}
+
+type Filters struct {
+	Column string
+	Value  interface{}
+}
+
 ////this will get any image sent with
 ///sent in the body of a request given
 ///the imazge key
