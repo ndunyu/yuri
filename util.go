@@ -27,7 +27,6 @@ func MakePin(min, max, n int) string {
 
 }
 
-
 func CheckTokenId(r *http.Request, JwtSecretKey []byte) (int, error) {
 
 	authHeader := r.Header.Get("Authorization")
@@ -48,7 +47,7 @@ func CheckTokenId(r *http.Request, JwtSecretKey []byte) (int, error) {
 
 	}
 
-	userId, err := ValidateToken(sentToken,JwtSecretKey)
+	userId, err := ValidateToken(sentToken, JwtSecretKey)
 	if err != nil {
 		return 0, errors.New("unauthorized")
 
@@ -81,6 +80,17 @@ func ValidateToken(tok string, JwtSecretKey []byte) (int, error) {
 
 }
 
+func CreateToken(claims jwt.MapClaims, JwtSecretKey []byte) string {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString(JwtSecretKey)
+	if err != nil {
+
+	}
+
+	return tokenString
+
+}
+
 type WrongTokenCredential struct {
 	s string
 }
@@ -92,12 +102,6 @@ func (e *WrongTokenCredential) Error() string {
 func new(text string) error {
 	return &WrongTokenCredential{text}
 }
-
-
-
-
-
-
 
 func random(min, max int) int {
 	//rand.Seed(time.Now().Unix())
