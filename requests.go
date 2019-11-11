@@ -80,21 +80,19 @@ type Filters struct {
 //takes in a pointer and reads to it the request body sent
 func RequestBody(r *http.Request, item interface{}) *ErrResponse {
 	if reflect.ValueOf(item).Kind() != reflect.Ptr {
-		return      ErrInvalidRequest
+		return ErrInvalidRequest
 
 	}
 	err := json.NewDecoder(r.Body).Decode(&item)
 	if err != nil {
 		log.Println(err)
 		///sentry.CaptureException(err)
-		return          ErrInvalidRequest
+		return ErrInvalidRequest
 	}
 	defer r.Body.Close()
 	return nil
 
-
 }
-
 
 //this will get the size
 //and the page from request if they exist

@@ -30,7 +30,7 @@ func InsertItem(item interface{}, DB *pg.DB) *ErrResponse {
 }
 
 //update items using id
-func UpdateItem(item interface{}, id int, DB *pg.DB) *ErrResponse {
+func UpdateItem(item interface{},q *orm.Query, DB *pg.DB) *ErrResponse {
 	//test presence of object
 	if reflect.ValueOf(item).Kind() != reflect.Ptr {
 		log.Println("not a pointer")
@@ -38,8 +38,7 @@ func UpdateItem(item interface{}, id int, DB *pg.DB) *ErrResponse {
 		return ErrInvalidRequest
 
 	}
-
-	results, err := DB.Model(item).Where("id=?", id).Returning("*").UpdateNotZero()
+	results, err := q.Returning("*").UpdateNotZero()
 	if err != nil && err == pg.ErrNoRows {
 		log.Println(err)
 		///raven.CaptureError(err, nil)
@@ -93,7 +92,6 @@ func GetItemsHandler(item interface{}, q *orm.Query, p *Pagination) (*ResponseDa
 		q.Offset(p.Offset)
 	}
 
-
 	count, err := q.SelectAndCount()
 	if err != nil {
 		log.Println(err)
@@ -106,13 +104,8 @@ func GetItemsHandler(item interface{}, q *orm.Query, p *Pagination) (*ResponseDa
 	return &response, nil
 }
 
-
-
-
-
 ///get a single item and its relations if any
 func GetItemHandler(q *orm.Query) *ErrResponse {
-
 
 	err := q.First()
 
