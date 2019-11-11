@@ -30,14 +30,14 @@ func InsertItem(item interface{}, DB *pg.DB) *ErrResponse {
 }
 
 //update items using id
-func UpdateItem(item interface{},q *orm.Query) *ErrResponse {
+func UpdateItem(q *orm.Query) *ErrResponse {
 	//test presence of object
-	if reflect.ValueOf(item).Kind() != reflect.Ptr {
+	/*if reflect.ValueOf(item).Kind() != reflect.Ptr {
 		log.Println("not a pointer")
 
 		return ErrInvalidRequest
 
-	}
+	}*/
 	results, err := q.Returning("*").UpdateNotZero()
 	if err != nil && err == pg.ErrNoRows {
 		log.Println(err)
