@@ -31,8 +31,8 @@ type Filters struct {
 ////this will get any image sent with
 ///sent in the body of a request given
 ///the imazge key
-func FormFile(r *http.Request, path, url string) (string, *ErrResponse) {
-	_, image, err := ReadRequestFile(r, "image", path, url)
+func FormFile(r *http.Request, filename,path, url string,) (string, *ErrResponse) {
+	_, image, err := ReadRequestFile(r, filename, path, url)
 	if err != nil {
 		log.Println(err)
 		return "", ErrInvalidRequest
