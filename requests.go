@@ -5,10 +5,16 @@ package yuri
 
 import (
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"reflect"
 	"strconv"
+	"strings"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 type Pagination struct {
@@ -25,7 +31,7 @@ type Filters struct {
 ////this will get any image sent with
 ///sent in the body of a request given
 ///the imazge key
-/*func FormFile(r *http.Request, path, url string) (string, *ErrResponse) {
+func FormFile(r *http.Request, path, url string) (string, *ErrResponse) {
 	_, image, err := ReadRequestFile(r, "image", path, url)
 	if err != nil {
 		log.Println(err)
@@ -34,14 +40,14 @@ type Filters struct {
 
 	return image, nil
 
-}*/
+}
 
 ///////get the file from the data
 /////filename is the key the formfile was sent with
 ////path is where you want to store the file
 ////base url is the base http you want to be accesssing the file with
 ////example of baseUrl="https://ndunyu.co.ke/images"
-/*func ReadRequestFile(r *http.Request, filename string, storagePath string, BaseUrl string) (string, string, error) {
+func ReadRequestFile(r *http.Request, filename string, storagePath string, BaseUrl string) (string, string, error) {
 	_ = r.ParseMultipartForm(32 << 20)
 	file, handler, err := r.FormFile(filename)
 
@@ -76,7 +82,6 @@ type Filters struct {
 
 }
 
-*/
 //takes in a pointer and reads to it the request body sent
 func RequestBody(r *http.Request, item interface{}) *ErrResponse {
 	if reflect.ValueOf(item).Kind() != reflect.Ptr {
