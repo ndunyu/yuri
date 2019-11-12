@@ -123,3 +123,21 @@ func GetItemHandler(q *orm.Query) *ErrResponse {
 
 	return nil
 }
+
+func RawQuery(DB *pg.DB, item interface{}, query string, params ...interface{}) *ErrResponse {
+	_, err := DB.Query(&item, query, params)
+	if err != nil {
+		if err == pg.ErrNoRows {
+			log.Println(err)
+			return ErrNotFound
+
+		}
+		log.Println(err)
+		return ErrInternalServerError
+
+	}
+
+
+	return  nil
+
+}
