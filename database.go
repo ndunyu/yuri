@@ -124,8 +124,7 @@ func GetItemHandler(q *orm.Query) *ErrResponse {
 	return nil
 }
 
-func RawQuery(DB *pg.DB, item interface{}, query string, params ...interface{}) *ErrResponse {
-	_, err := DB.Query(&item, query, params)
+func RawQuery(result orm.Result, err error) *ErrResponse {
 	if err != nil {
 		if err == pg.ErrNoRows {
 			log.Println(err)
@@ -137,7 +136,6 @@ func RawQuery(DB *pg.DB, item interface{}, query string, params ...interface{}) 
 
 	}
 
-
-	return  nil
+	return nil
 
 }
