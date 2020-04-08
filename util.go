@@ -27,6 +27,16 @@ func MakePin(min, max, n int) string {
 
 }
 
+func MakeIntPin(min, max, n int) int {
+
+	data,_:=strconv.Atoi(MakePin(min,max,n))
+	return data
+
+}
+
+
+
+
 func CheckTokenId(r *http.Request, JwtSecretKey []byte) (int, error) {
 
 	authHeader := r.Header.Get("Authorization")
