@@ -145,3 +145,11 @@ func CheckPasswordHash(password, hash string) bool {
 
 	return err == nil
 }
+
+
+func PrintStruct(data interface{}){
+	fmt.Printf("%+v\n", data)
+
+
+
+}
