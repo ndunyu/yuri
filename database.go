@@ -57,7 +57,7 @@ func UpdateItem(q *orm.Query) *ErrResponse {
 
 }
 
-///this will delete an item using
+//DeleteItem this will delete an item using
 ///an id
 func DeleteItem(item interface{}, id int, DB *pg.DB) *ErrResponse {
 	if reflect.ValueOf(item).Kind() != reflect.Ptr {
@@ -139,7 +139,3 @@ func RawQuery(result orm.Result, err error) *ErrResponse {
 	return nil
 
 }
-
-
-
-
