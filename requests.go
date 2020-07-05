@@ -28,6 +28,63 @@ type Filters struct {
 	Value  interface{}
 }
 
+func FormFileNoName(r *http.Request, filename,path, url string,) (string, *ErrResponse) {
+	_, image, err := ReadRequestFileNoName(r, filename, path, url)
+	if err != nil {
+		log.Println(err)
+		return "", ErrInvalidRequest
+	}
+
+	return image, nil
+
+}
+
+
+func ReadRequestFileNoName(r *http.Request, filename string, storagePath string, BaseUrl string) (string, string, error) {
+	_ = r.ParseMultipartForm(32 << 20)
+	file, handler, err := r.FormFile(filename)
+
+	//ex, err := os.Executable()
+	if err != nil {
+		log.Println(err)
+		return "", "", err
+
+	}
+	defer file.Close()
+	if _, err := os.Stat(storagePath); os.IsNotExist(err) {
+		_ = os.MkdirAll(storagePath, os.ModePerm)
+	}
+
+	////imageName := uuid.NewV4().String() + filepath.Ext(handler.Filename)
+	imageName :=  handler.Filename
+
+	imagePath := storagePath + imageName
+
+	f, err := os.OpenFile(imagePath, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		return "", "", err
+
+	}
+
+	result := strings.Replace(imagePath, storagePath, "", -1)
+
+	imageUrl := BaseUrl + result
+	//image_name =   handler.Filename
+	defer f.Close()
+	_, _ = io.Copy(f, file)
+	return imageName, imageUrl, nil
+
+}
+
+
+
+
+
+
+
+
+
+
 ////this will get any image sent with
 ///sent in the body of a request given
 ///the imazge key
