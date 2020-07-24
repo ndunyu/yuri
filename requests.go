@@ -38,7 +38,12 @@ func FormFileNoName(r *http.Request, filename,path, url string,) (string, *ErrRe
 	return image, nil
 
 }
+func DynamicData(r *http.Request, dataname string) ([]byte, error) {
 
+	data := r.FormValue(dataname)
+
+	return []byte(data), nil
+}
 
 func ReadRequestFileNoName(r *http.Request, filename string, storagePath string, BaseUrl string) (string, string, error) {
 	_ = r.ParseMultipartForm(32 << 20)
@@ -88,7 +93,7 @@ func ReadRequestFileNoName(r *http.Request, filename string, storagePath string,
 ////this will get any image sent with
 ///sent in the body of a request given
 ///the imazge key
-func FormFile(r *http.Request, filename,path, url string,) (string, *ErrResponse) {
+func FormFile(r *http.Request, filename,path, url string) (string, *ErrResponse) {
 	_, image, err := ReadRequestFile(r, filename, path, url)
 	if err != nil {
 		log.Println(err)
@@ -98,6 +103,18 @@ func FormFile(r *http.Request, filename,path, url string,) (string, *ErrResponse
 	return image, nil
 
 }
+
+
+
+///func UploadAndResize(r *http.Request, filename,path, url string)(string, *ErrResponse){
+
+
+
+
+//}
+
+
+
 
 ///////get the file from the data
 /////filename is the key the formfile was sent with
