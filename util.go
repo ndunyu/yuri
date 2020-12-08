@@ -14,6 +14,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/chi"
+	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -183,4 +184,14 @@ func ToJson(data interface{}) ([]byte, error) {
 func checkKenyaInternationalPhoneNumber(phone string) bool {
 	re := regexp.MustCompile(`(\+254)\d{9}$`)
 	return re.MatchString(phone)
+}
+
+
+func CreateGid() string {
+
+	u2 := uuid.NewV4()
+
+	return u2.String()
+
+
 }
