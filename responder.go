@@ -31,12 +31,12 @@ func JsonResponder(w http.ResponseWriter, r *http.Request, item interface{}, err
 func ValidationError(w http.ResponseWriter, r *http.Request,err []Field){
 	var errorResponse ErrorsResponse
 	errorResponse.Errors=err
-	data,_:=ToString(errorResponse)
+	data,_:=ToJson(errorResponse)
 	w.Header().Set("Content-Type", "application/json")
 	JsonResponder(w,r,data,&ErrResponse{
 		HTTPStatusCode: http.StatusBadRequest,
 		Message:       "Invalid Request Body" ,
-		StatusText:     data,
+		StatusText:     "Invalid Request Body",
 	})
 
 

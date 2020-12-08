@@ -168,3 +168,12 @@ func ToString(data interface{}) (string, error) {
 	}
 	return string(b), nil
 }
+
+
+func ToJson(data interface{}) ([]byte, error) {
+	b, err := json.Marshal(data)
+	if err != nil {
+		return nil, err
+	}
+	return b,nil
+}
