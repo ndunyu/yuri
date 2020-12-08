@@ -34,6 +34,6 @@ func TranslateErrors(trans ut.Translator, err error) []Field {
 }
 
 type Field struct {
-	Field int `json:"field"`
+	///Field int `json:"field"`
 	Message string `json:"message"`
 }
