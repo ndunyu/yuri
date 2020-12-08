@@ -17,6 +17,10 @@ func TranslateErrors(trans ut.Translator, err error) {
 		fmt.Println(m)
 		// can translate each error one at a time.
 		fmt.Println(e.Translate(trans))
+
 	}
+
+
+
 
 }
