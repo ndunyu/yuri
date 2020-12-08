@@ -44,5 +44,5 @@ func ValidationError(w http.ResponseWriter, r *http.Request,err []Field){
 }
 
 type  ErrorsResponse struct {
-	Errors interface{} `json:"error"`
+	Errors interface{} `json:"errors"`
 }
