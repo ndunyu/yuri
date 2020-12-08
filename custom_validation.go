@@ -16,12 +16,14 @@ func TranslateErrors(trans ut.Translator, err error) []string {
 	errs := err.(validator.ValidationErrors)
 	for _, e := range errs {
 		// can translate each error one at a time.
-		fmt.Println(e.Translate(trans))
-		fmt.Println(e.ActualTag())
-		fmt.Println(e.Error())
+
+		fmt.Println(e.Namespace())
 		fmt.Println(e.StructField())
 		fmt.Println(e.Field())
+		fmt.Println(e.Tag())
 		t = append(t, e.Translate(trans))
+
+		fmt.Println(e.Translate(trans))
 	}
 
 	return t
