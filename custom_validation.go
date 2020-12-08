@@ -17,6 +17,10 @@ func TranslateErrors(trans ut.Translator, err error) []string {
 	for _, e := range errs {
 		// can translate each error one at a time.
 		fmt.Println(e.Translate(trans))
+		fmt.Println(e.ActualTag())
+		fmt.Println(e.Error())
+		fmt.Println(e.StructField())
+		fmt.Println(e.Field())
 		t = append(t, e.Translate(trans))
 	}
 
