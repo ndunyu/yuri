@@ -173,6 +173,14 @@ func RequestBody(r *http.Request, item interface{}) *ErrResponse {
 
 }
 
+//RequestBodyToFromJson is to replace [RequestBody to return ]
+//a go error instead of http error
+func RequestBodyToFromJson(r *http.Request, item interface{}){
+
+
+
+}
+
 //this will get the size
 //and the page from request if they exist
 //else use the default
