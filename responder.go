@@ -26,3 +26,17 @@ func JsonResponder(w http.ResponseWriter, r *http.Request, item interface{}, err
 	json.NewEncoder(w).Encode(item)
 
 }
+
+
+func ValidationError(w http.ResponseWriter, r *http.Request,err []Field){
+	data,_:=ToString(err)
+	JsonResponder(w,r,nil,&ErrResponse{
+		HTTPStatusCode: http.StatusBadRequest,
+		Message:       data ,
+		StatusText:     data,
+	})
+
+
+}
+
+

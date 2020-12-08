@@ -13,10 +13,10 @@ func TranslateErrors(trans ut.Translator, err error) []Field {
 
 	errs := err.(validator.ValidationErrors)
 	em := []Field{}
-	for m, e := range errs {
+	for _, e := range errs {
 		// can translate each error one at a time.
         f:=Field{
-			Field:   m,
+			//Field:   m,
 			Message:e.Translate(trans) ,
 		}
 		///fmt.Println(e.Namespace())

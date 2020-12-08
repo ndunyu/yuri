@@ -1,6 +1,7 @@
 package yuri
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -157,4 +158,13 @@ func MakeTimestamp() int64 {
 	t := time.Now()
 	tUnixMilli := int64(time.Nanosecond) * t.UnixNano() / int64(time.Millisecond)
 	return tUnixMilli
+}
+
+
+func ToString(data interface{}) (string, error) {
+	b, err := json.Marshal(data)
+	if err != nil {
+		return "", err
+	}
+	return string(b), nil
 }
