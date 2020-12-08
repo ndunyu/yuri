@@ -11,16 +11,15 @@ func PhoneNumberValidation(fl validator.FieldLevel) bool {
 	return true
 }
 
-func TranslateErrors(trans ut.Translator, err error) {
+func TranslateErrors(trans ut.Translator, err error) []string {
+	var t []string
 	errs := err.(validator.ValidationErrors)
-	for m, e := range errs {
-		fmt.Println(m)
+	for _, e := range errs {
 		// can translate each error one at a time.
 		fmt.Println(e.Translate(trans))
-
+		t = append(t, e.Translate(trans))
 	}
 
-
-
+	return t
 
 }
