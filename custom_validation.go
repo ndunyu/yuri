@@ -12,6 +12,7 @@ func PhoneNumberValidation(fl validator.FieldLevel) bool {
 }
 
 
+
 func TranslateErrors(trans ut.Translator,err error){
 	errs := err.(validator.ValidationErrors)
 	for _, e := range errs {
