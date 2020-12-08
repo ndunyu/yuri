@@ -7,6 +7,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -176,4 +177,14 @@ func ToJson(data interface{}) ([]byte, error) {
 		return nil, err
 	}
 	return b,nil
+}
+
+///TODO::make sure numbers dont pass 9
+func checkKenyaInternationalPhoneNumber(phone string) bool {
+	re := regexp.MustCompile(`(\+254)\d{9}`)
+
+
+
+
+	return re.MatchString(phone)
 }

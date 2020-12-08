@@ -6,8 +6,13 @@ import (
 )
 
 func PhoneNumberValidation(fl validator.FieldLevel) bool {
-	return true
+
+	return checkKenyaInternationalPhoneNumber(fl.Field().String())
 }
+
+
+
+
 
 func TranslateErrors(trans ut.Translator, err error) []Field {
 
