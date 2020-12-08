@@ -29,7 +29,9 @@ func JsonResponder(w http.ResponseWriter, r *http.Request, item interface{}, err
 
 
 func ValidationError(w http.ResponseWriter, r *http.Request,err []Field){
-	data,_:=ToString(err)
+	var errorResponse ErrorsResponse
+	errorResponse.Errors=err
+	data,_:=ToString(errorResponse)
 	w.Header().Set("Content-Type", "application/json")
 	JsonResponder(w,r,data,&ErrResponse{
 		HTTPStatusCode: http.StatusBadRequest,
@@ -41,4 +43,6 @@ func ValidationError(w http.ResponseWriter, r *http.Request,err []Field){
 
 }
 
-
+type  ErrorsResponse struct {
+	Errors interface{} `json:"error"`
+}
