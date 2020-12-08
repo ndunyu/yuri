@@ -5,6 +5,7 @@ package yuri
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"log"
 	"net/http"
@@ -28,7 +29,7 @@ type Filters struct {
 	Value  interface{}
 }
 
-func FormFileNoName(r *http.Request, filename,path, url string,) (string, *ErrResponse) {
+func FormFileNoName(r *http.Request, filename, path, url string, ) (string, *ErrResponse) {
 	_, image, err := ReadRequestFileNoName(r, filename, path, url)
 	if err != nil {
 		log.Println(err)
@@ -61,7 +62,7 @@ func ReadRequestFileNoName(r *http.Request, filename string, storagePath string,
 	}
 
 	////imageName := uuid.NewV4().String() + filepath.Ext(handler.Filename)
-	imageName :=  handler.Filename
+	imageName := handler.Filename
 
 	imagePath := storagePath + imageName
 
@@ -81,19 +82,10 @@ func ReadRequestFileNoName(r *http.Request, filename string, storagePath string,
 
 }
 
-
-
-
-
-
-
-
-
-
 ////this will get any image sent with
 ///sent in the body of a request given
 ///the imazge key
-func FormFile(r *http.Request, filename,path, url string) (string, *ErrResponse) {
+func FormFile(r *http.Request, filename, path, url string) (string, *ErrResponse) {
 	_, image, err := ReadRequestFile(r, filename, path, url)
 	if err != nil {
 		log.Println(err)
@@ -104,17 +96,9 @@ func FormFile(r *http.Request, filename,path, url string) (string, *ErrResponse)
 
 }
 
-
-
 ///func UploadAndResize(r *http.Request, filename,path, url string)(string, *ErrResponse){
 
-
-
-
 //}
-
-
-
 
 ///////get the file from the data
 /////filename is the key the formfile was sent with
@@ -175,10 +159,20 @@ func RequestBody(r *http.Request, item interface{}) *ErrResponse {
 
 //RequestBodyToFromJson is to replace [RequestBody to return ]
 //a go error instead of http error
-func RequestBodyToFromJson(r *http.Request, item interface{}){
+func RequestBodyToFromJson(r *http.Request, item interface{}) error {
+	if reflect.ValueOf(item).Kind() != reflect.Ptr {
+		return errors.New("A pointer is required")
 
+	}
+	err := json.NewDecoder(r.Body).Decode(&item)
+	if err != nil {
+		log.Println(err)
+		///sentry.CaptureException(err)
+		return err
+	}
+	defer r.Body.Close()
 
-
+	return nil
 }
 
 //this will get the size
