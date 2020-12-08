@@ -27,22 +27,23 @@ func JsonResponder(w http.ResponseWriter, r *http.Request, item interface{}, err
 
 }
 
-
-func ValidationError(w http.ResponseWriter, r *http.Request,err []Field){
+func ValidationError(w http.ResponseWriter, r *http.Request, err []Field) {
 	var errorResponse ErrorsResponse
-	errorResponse.Errors=err
-	data,_:=ToJson(errorResponse)
+	errorResponse.Errors = err
+	data, _ := ToJson(errorResponse)
 	w.Header().Set("Content-Type", "application/json")
-	JsonResponder(w,r,data,&ErrResponse{
+	w.WriteHeader(http.StatusBadRequest)
+	w.Write(data)
+
+	/*JsonResponder(w,r,data,&ErrResponse{
 		HTTPStatusCode: http.StatusBadRequest,
 		Message:       "Invalid Request Body" ,
-		StatusText:     "Invalid Request Body",
+		StatusText:     data,
 	})
-
-
+	*/
 
 }
 
-type  ErrorsResponse struct {
+type ErrorsResponse struct {
 	Errors interface{} `json:"errors"`
 }
