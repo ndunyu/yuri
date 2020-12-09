@@ -3,6 +3,7 @@ package yuri
 import (
 	"encoding/json"
 	"errors"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -52,6 +53,14 @@ func (a *AfricaTalking) SendSms(to, message string) (*AfricaTalkingResponse, err
 
 	PrintStruct("Response code is: ")
 	PrintStruct(resp.Status)
+
+
+	if resp.StatusCode!=200 {
+		if b, err := ioutil.ReadAll(resp.Body); err == nil {
+			PrintStruct(string(b))
+		}
+
+	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 
