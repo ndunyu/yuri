@@ -60,6 +60,8 @@ func (a *AfricaTalking) SendSms(to, message string) (*AfricaTalkingResponse, err
 			PrintStruct(string(b))
 		}
 
+		return  nil,errors.New("not status 200")
+
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
