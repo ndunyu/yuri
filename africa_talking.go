@@ -50,7 +50,13 @@ func (a *AfricaTalking) SendSms(to, message string) (*AfricaTalkingResponse, err
 	defer resp.Body.Close()
 	var response AfricaTalkingResponse
 
+	PrintStruct("Response code is: ")
+	PrintStruct(resp.Status)
+
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+
+
+		PrintStruct(err)
 		return nil, errors.New("error converting from json")
 	}
 	return &response, nil
