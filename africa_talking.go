@@ -19,7 +19,7 @@ type AfricaTalking struct {
 	From     string
 }
 
-func New(apiKey, userName, from string) AfricaTalking {
+func NewAfricaTalking(apiKey, userName, from string) AfricaTalking {
 	return AfricaTalking{
 		Live:     true,
 		ApiKey:   apiKey,
