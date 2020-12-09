@@ -4,8 +4,9 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/go-pg/pg/v9"
-	"github.com/go-pg/pg/v9/orm"
+	"github.com/go-pg/pg/v10"
+	"github.com/go-pg/pg/v10/orm"
+
 )
 
 ////it takes in  a request object reads its data
@@ -18,7 +19,7 @@ func InsertItem(item interface{}, DB *pg.DB) *ErrResponse {
 		return ErrInvalidRequest
 
 	}
-	err := DB.Insert(item)
+	_,err := DB.Model(&item).Insert(item)
 	if err != nil {
 		log.Println(err)
 		return ErrInternalServerError
