@@ -55,7 +55,7 @@ func (a *AfricaTalking) SendSms(to, message string) (*AfricaTalkingResponse, err
 	PrintStruct(resp.Status)
 
 
-	if resp.StatusCode!=200 {
+	if resp.StatusCode>=200&&resp.StatusCode<=210 {
 		if b, err := ioutil.ReadAll(resp.Body); err == nil {
 			PrintStruct(string(b))
 		}
