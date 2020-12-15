@@ -55,11 +55,9 @@ func (a *AfricaTalking) SendSms(to, message string) (*AfricaTalkingResponse, err
 	PrintStruct(resp.Status)
 
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
-		if b, err := ioutil.ReadAll(resp.Body); err == nil {
-			PrintStruct(string(b))
-		}
+		b, _ := ioutil.ReadAll(resp.Body)
 
-		return nil, errors.New("not status 200")
+		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
 
@@ -119,4 +117,14 @@ type SMSMessageData struct {
 	Message string `json:"Message"`
 
 	Recipients []Recipients `json:"Recipients"`
+}
+
+type RequestError struct {
+	StatusCode int
+
+	Message string
+}
+
+func (r *RequestError) Error() string {
+	return r.Message
 }
