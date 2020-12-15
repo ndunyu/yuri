@@ -54,18 +54,16 @@ func (a *AfricaTalking) SendSms(to, message string) (*AfricaTalkingResponse, err
 	PrintStruct("Response code is: ")
 	PrintStruct(resp.Status)
 
-
-	if resp.StatusCode>=200&&resp.StatusCode<=210 {
+	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
 		if b, err := ioutil.ReadAll(resp.Body); err == nil {
 			PrintStruct(string(b))
 		}
 
-		return  nil,errors.New("not status 200")
+		return nil, errors.New("not status 200")
 
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-
 
 		PrintStruct(err)
 		return nil, errors.New("error converting from json")
