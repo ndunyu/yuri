@@ -1,6 +1,8 @@
 package yuri
 
-import "net/http"
+import (
+	"net/http"
+)
 
 var ErrNotFound = &ErrResponse{HTTPStatusCode: 404, StatusText: "Item not found."}
 var ErrInvalidRequest = &ErrResponse{HTTPStatusCode: http.StatusBadRequest, StatusText: "Invalid request."}
@@ -12,4 +14,12 @@ type ErrResponse struct {
 	HTTPStatusCode int    `json:"http_status_code"`
 	Message        string `json:"message"`
 	StatusText     string `json:"status"`
+}
+
+type ItemExistsError struct {
+	Message string
+}
+
+func (I *ItemExistsError) Error() string {
+	return I.Message
 }
