@@ -29,7 +29,7 @@ type Filters struct {
 	Value  interface{}
 }
 
-func FormFileNoName(r *http.Request, filename, path, url string, ) (string, *ErrResponse) {
+func FormFileNoName(r *http.Request, filename, path, url string) (string, *ErrResponse) {
 	_, image, err := ReadRequestFileNoName(r, filename, path, url)
 	if err != nil {
 		log.Println(err)
@@ -196,5 +196,11 @@ func (p *Pagination) GetPagination(r *http.Request) {
 	} else {
 		p.Offset = 0
 	}
+
+}
+
+func GetQueryParameter(key string, r *http.Request) string {
+
+	return r.URL.Query().Get(key)
 
 }
