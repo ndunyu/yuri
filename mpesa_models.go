@@ -63,7 +63,7 @@ type ReferenceData struct {
 }
 type ResultParameter struct {
 	Key   string `json:"Key"`
-	Value string `json:"Value,omitempty"`
+	Value interface{} `json:"Value,omitempty"`
 }
 type ResultParameters struct {
 	ResultParameter []ResultParameter `json:"ResultParameter"`
