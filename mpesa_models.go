@@ -44,6 +44,25 @@ type AccountBalanceRequestBody struct {
 	QueueTimeOutURL    string
 }
 
+////Transaction Status
+
+type TransactionStatusRequestBody struct {
+	Initiator          string
+	SecurityCredential string
+
+	CommandID          string
+	TransactionID  string
+	PartyA             string
+	IdentifierType     string
+	Remarks            string
+	ResultURL          string
+	QueueTimeOutURL    string
+	Occasion          string
+
+}
+
+
+
 type MpesaResult struct {
 	ConversationID           string `json:"ConversationID"`
 	OriginatorConversationID string `json:"OriginatorConversationID"`
