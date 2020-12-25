@@ -49,17 +49,20 @@ type AccountBalanceRequestBody struct {
 type TransactionStatusRequestBody struct {
 	Initiator          string
 	SecurityCredential string
+	ShortCode          string
 
-	CommandID          string
-	TransactionID  string
-	PartyA             string
-	IdentifierType     string
-	Remarks            string
-	ResultURL          string
-	QueueTimeOutURL    string
-	Occasion          string
-
+	CommandID                string
+	TransactionID            string
+	OriginatorConversationID string
+	PartyA          string
+	IdentifierType  string
+	Remarks         string
+	ResultURL       string
+	QueueTimeOutURL string
+	Occasion        string
 }
+
+
 
 
 
@@ -70,8 +73,25 @@ type MpesaResult struct {
 	ResponseDescription      string `json:"ResponseDescription"`
 }
 
+type MpesaTransactionStatus struct {
+	//////
+	Result MpesaTransactionResult
+
+
+
+
+}
+
+type MpesaTransactionResult struct {
+
+   Result
+   ReferenceData  BalanceReferenceData
+
+}
+
 type MpesaBalance struct {
 	Result BalanceResult `json:"Result"`
+
 }
 
 type BalanceReferenceData struct {
@@ -95,16 +115,6 @@ type MpesaB2BResult struct {
 
 	ReferenceData B2BReferenceData `json:"ReferenceData"`
 }
-
-
-
-
-
-
-
-
-
-
 
 type MpesaResponse struct {
 	Result Result `json:"Result"`
