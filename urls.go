@@ -8,6 +8,7 @@ const MpesaSandboxUrl = "https://sandbox.safaricom.co.ke/"
 const tokenUrl="oauth/v1/generate?grant_type=client_credentials"
 const b2cUrl="mpesa/b2c/v1/paymentrequest"
 const b2bUrl="mpesa/b2b/v1/paymentrequest"
+const balance="mpesa/accountbalance/v1/query"
 
 
 const SandBox string = "sandbox"
@@ -49,5 +50,15 @@ func (m *Mpesa)getB2BUrl() string {
 	}
 
 	return MpesaLiveUrl+b2bUrl
+
+}
+
+func (m *Mpesa)getBalanceUrl() string {
+	if !m.Live {
+
+		return MpesaSandboxUrl+balance
+	}
+
+	return MpesaLiveUrl+balance
 
 }

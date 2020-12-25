@@ -65,7 +65,7 @@ func (m *Mpesa) GetAccessToken() (*AccessTokenResponse, error) {
 }
 
 //B2C Sends Money from a business to the Customer
-func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*Result, error) {
+func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*MpesaResult, error) {
 	token, err := m.GetAccessToken()
 	if err != nil {
 
@@ -89,7 +89,7 @@ func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*Result, error) {
 		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
-	var response Result
+	var response MpesaResult
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 
@@ -100,7 +100,7 @@ func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*Result, error) {
 }
 
 //B2C Sends Money from a business to the Customer
-func (m *Mpesa) B2BRequest(b2b B2BRequestBody) (*Result, error) {
+func (m *Mpesa) B2BRequest(b2b B2BRequestBody) (*MpesaResult, error) {
 	token, err := m.GetAccessToken()
 	if err != nil {
 
@@ -124,7 +124,7 @@ func (m *Mpesa) B2BRequest(b2b B2BRequestBody) (*Result, error) {
 		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
-	var response Result
+	var response MpesaResult
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 
@@ -134,6 +134,55 @@ func (m *Mpesa) B2BRequest(b2b B2BRequestBody) (*Result, error) {
 	return &response, nil
 
 }
+
+
+
+//B2C Sends Money from a business to the Customer
+func (m *Mpesa) C2BRequest(b2b B2BRequestBody) (*MpesaResult, error) {
+
+
+	return nil,nil
+
+}
+
+
+
+func (m *Mpesa)AccountBalanceRequest (balance AccountBalanceRequestBody)(*MpesaResult, error) {
+	token, err := m.GetAccessToken()
+	if err != nil {
+
+		return nil, err
+	}
+	headers := make(map[string]string)
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + token.AccessToken
+	//url:="https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest"
+	url := m.getBalanceUrl()
+
+	resp, err := postRequest(url, balance, headers)
+	if err != nil {
+
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
+		b, _ := ioutil.ReadAll(resp.Body)
+
+		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
+
+	}
+	var response MpesaResult
+
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+
+		PrintStruct(err)
+		return nil, errors.New("error converting from json")
+	}
+
+
+	return &response, nil
+}
+
 
 func getRequest(url string, headers map[string]string) (*http.Response, error) {
 	///requestBody, err := json.Marshal(data)
