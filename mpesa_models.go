@@ -51,36 +51,58 @@ type MpesaResult struct {
 	ResponseDescription      string `json:"ResponseDescription"`
 }
 
+type MpesaBalance struct {
+	Result Result `json:"Result"`
+}
+
+type BalanceReferenceData struct {
+	ReferenceItem ReferenceItem `json:"ReferenceItem"`
+}
+type BalanceResult struct {
+	Result
+
+	ReferenceData BalanceReferenceData `json:"ReferenceData"`
+}
+
+
+
+
+
+
+
+
+
+
 type MpesaResponse struct {
 	Result Result `json:"Result"`
 }
 type ReferenceItem struct {
-	Key   string `json:"Key"`
-	Value interface{}  `json:"Value,omitempty"`
+	Key   string      `json:"Key"`
+	Value interface{} `json:"Value,omitempty"`
 }
 type ReferenceData struct {
 	ReferenceItem []ReferenceItem `json:"ReferenceItem"`
 }
 type ResultParameter struct {
-	Key   string `json:"Key"`
+	Key   string      `json:"Key"`
 	Value interface{} `json:"Value,omitempty"`
 }
 type ResultParameters struct {
 	ResultParameter []ResultParameter `json:"ResultParameter"`
 }
 type Result struct {
-	ConversationID           string           `json:"ConversationID"`
-	OriginatorConversationID string           `json:"OriginatorConversationID"`
-	ReferenceData            ReferenceData    `json:"ReferenceData"`
-	ResultCode               int              `json:"ResultCode"`
-	ResultDesc               string           `json:"ResultDesc"`
-	ResultParameters         ResultParameters `json:"ResultParameters"`
-	ResultType               int              `json:"ResultType"`
-	TransactionID            string           `json:"TransactionID"`
+	ConversationID string `json:"ConversationID"`
+	ResultType     int    `json:"ResultType"`
 
+	ResultCode int    `json:"ResultCode"`
+	ResultDesc string `json:"ResultDesc"`
 
+	OriginatorConversationID string `json:"OriginatorConversationID"`
+
+	TransactionID string `json:"TransactionID"`
+
+	ResultParameters ResultParameters `json:"ResultParameters"`
+
+	//ReferenceData            ReferenceData    `json:"ReferenceData"`
 
 }
-
-
-
