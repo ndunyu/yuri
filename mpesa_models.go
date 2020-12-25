@@ -52,7 +52,7 @@ type MpesaResult struct {
 }
 
 type MpesaBalance struct {
-	Result Result `json:"Result"`
+	Result BalanceResult `json:"Result"`
 }
 
 type BalanceReferenceData struct {
@@ -63,6 +63,20 @@ type BalanceResult struct {
 
 	ReferenceData BalanceReferenceData `json:"ReferenceData"`
 }
+
+type MpesaB2BResponse struct {
+	Result MpesaB2BResult `json:"Result"`
+}
+
+type B2BReferenceData struct {
+	ReferenceItem []ReferenceItem `json:"ReferenceItem"`
+}
+type MpesaB2BResult struct {
+	Result
+
+	ReferenceData B2BReferenceData `json:"ReferenceData"`
+}
+
 
 
 
