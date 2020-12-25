@@ -56,7 +56,7 @@ type MpesaResponse struct {
 }
 type ReferenceItem struct {
 	Key   string `json:"Key"`
-	Value int64  `json:"Value,omitempty"`
+	Value interface{}  `json:"Value,omitempty"`
 }
 type ReferenceData struct {
 	ReferenceItem []ReferenceItem `json:"ReferenceItem"`
