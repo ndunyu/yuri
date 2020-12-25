@@ -40,75 +40,12 @@ func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*MpesaResult, error) {
 
 	return m.sendAndProcessMpesaRequest(m.getB2CUrl(), b2c, nil)
 
-	/*token, err := m.GetAccessToken()
-	if err != nil {
-
-		return nil, err
-	}
-	headers := make(map[string]string)
-	headers["Content-Type"] = "application/json"
-	headers["Authorization"] = "Bearer " + token.AccessToken
-	//url:="https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest"
-	url := m.getB2CUrl()
-
-	resp, err := postRequest(url, b2c, headers)
-	if err != nil {
-
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
-		b, _ := ioutil.ReadAll(resp.Body)
-
-		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
-
-	}
-	var response MpesaResult
-
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-
-		PrintStruct(err)
-		return nil, errors.New("error converting from json")
-	}
-	return &response, nil*/
 }
 
 //B2C Sends Money from a business to the Customer
 func (m *Mpesa) B2BRequest(b2b B2BRequestBody) (*MpesaResult, error) {
 
 	return m.sendAndProcessMpesaRequest(m.getB2BUrl(), b2b, nil)
-
-	/*token, err := m.GetAccessToken()
-	if err != nil {
-
-		return nil, err
-	}
-	headers := make(map[string]string)
-	headers["Content-Type"] = "application/json"
-	headers["Authorization"] = "Bearer " + token.AccessToken
-	//url:="https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest"
-	url := m.getB2BUrl()
-
-	resp, err := postRequest(url, b2b, headers)
-	if err != nil {
-
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
-		b, _ := ioutil.ReadAll(resp.Body)
-
-		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
-
-	}
-	var response MpesaResult
-
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-
-		PrintStruct(err)
-		return nil, errors.New("error converting from json")
-	}
-	return &response, nil*/
 
 }
 
@@ -122,38 +59,7 @@ func (m *Mpesa) C2BRequest(b2b B2BRequestBody) (*MpesaResult, error) {
 func (m *Mpesa) AccountBalanceRequest(balance AccountBalanceRequestBody) (*MpesaResult, error) {
 
 	return m.sendAndProcessMpesaRequest(m.getBalanceUrl(), balance, nil)
-	/*token, err := m.GetAccessToken()
-	if err != nil {
 
-		return nil, err
-	}
-	headers := make(map[string]string)
-	headers["Content-Type"] = "application/json"
-	headers["Authorization"] = "Bearer " + token.AccessToken
-	//url:="https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest"
-	url := m.getBalanceUrl()
-
-	resp, err := postRequest(url, balance, headers)
-	if err != nil {
-
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
-		b, _ := ioutil.ReadAll(resp.Body)
-
-		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
-
-	}
-	var response MpesaResult
-
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-
-		PrintStruct(err)
-		return nil, errors.New("error converting from json")
-	}
-
-	return &response, nil*/
 }
 
 func (m *Mpesa) TransactionStatusRequest(transactionStatusRequestBody TransactionStatusRequestBody) (*MpesaResult, error) {
@@ -161,40 +67,6 @@ func (m *Mpesa) TransactionStatusRequest(transactionStatusRequestBody Transactio
 	///4 for organization (indentifiertype)
 	return m.sendAndProcessMpesaRequest(m.getTransactionStatusUrl(), transactionStatusRequestBody, nil)
 
-	/*token, err := m.GetAccessToken()
-	if err != nil {
-
-		return nil, err
-	}
-	headers := make(map[string]string)
-	headers["Content-Type"] = "application/json"
-	headers["Authorization"] = "Bearer " + token.AccessToken
-	//url:="https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest"
-	url := m.getTransactionStatusUrl()
-
-	resp, err := postRequest(url, transactionStatusRequestBody, headers)
-	if err != nil {
-
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
-		b, _ := ioutil.ReadAll(resp.Body)
-
-		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
-
-	}
-	var response MpesaResult
-	var data map[string]interface{}
-
-	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
-
-		PrintStruct(err)
-		return nil, errors.New("error converting from json")
-	}
-	PrintStruct(data)
-
-	return &response, nil*/
 }
 
 func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHeader map[string]string) (*MpesaResult, error) {

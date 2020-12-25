@@ -24,49 +24,39 @@ const BusinessBuyGoods string = "BusinessBuyGoods"
 const Production string = "production"
 
 func (m *Mpesa) getAccessTokenUrl() string {
-	if !m.Live {
 
-		return MpesaSandboxUrl + tokenUrl
-	}
-
-	return MpesaLiveUrl + tokenUrl
+	return m.getBaseUrl() + tokenUrl
 }
 func (m *Mpesa) getB2CUrl() string {
-	if !m.Live {
 
-		return MpesaSandboxUrl + b2cUrl
-	}
-
-	return MpesaLiveUrl + b2cUrl
+	return m.getBaseUrl() + b2cUrl
 
 }
 
 func (m *Mpesa) getB2BUrl() string {
-	if !m.Live {
 
-		return MpesaSandboxUrl + b2bUrl
-	}
-
-	return MpesaLiveUrl + b2bUrl
+	return m.getBaseUrl() + b2bUrl
 
 }
 
 func (m *Mpesa) getBalanceUrl() string {
-	if !m.Live {
 
-		return MpesaSandboxUrl + balance
-	}
-
-	return MpesaLiveUrl + balance
+	return m.getBaseUrl() + balance
 
 }
 
 func (m *Mpesa) getTransactionStatusUrl() string {
+
+	return m.getBaseUrl() + transactionStatus
+
+}
+
+func (m *Mpesa) getBaseUrl() string {
 	if !m.Live {
 
-		return MpesaSandboxUrl + transactionStatus
+		return MpesaSandboxUrl
 	}
 
-	return MpesaLiveUrl +transactionStatus
+	return MpesaLiveUrl
 
 }
