@@ -54,17 +54,22 @@ type TransactionStatusRequestBody struct {
 	CommandID                string
 	TransactionID            string
 	OriginatorConversationID string
-	PartyA          string
-	IdentifierType  string
-	Remarks         string
-	ResultURL       string
-	QueueTimeOutURL string
-	Occasion        string
+	PartyA                   string
+	IdentifierType           string
+	Remarks                  string
+	ResultURL                string
+	QueueTimeOutURL          string
+	Occasion                 string
 }
 
+/////Register C2B url
 
-
-
+type RegisterC2BURLRequestBody struct {
+	ValidationURL   string
+	ConfirmationURL string
+	ResponseType    string
+	ShortCode       string
+}
 
 type MpesaResult struct {
 	ConversationID           string `json:"ConversationID"`
@@ -76,22 +81,15 @@ type MpesaResult struct {
 type MpesaTransactionStatus struct {
 	//////
 	Result MpesaTransactionResult
-
-
-
-
 }
 
 type MpesaTransactionResult struct {
-
-   Result
-   ReferenceData  BalanceReferenceData
-
+	Result
+	ReferenceData BalanceReferenceData
 }
 
 type MpesaBalance struct {
 	Result BalanceResult `json:"Result"`
-
 }
 
 type BalanceReferenceData struct {

@@ -8,7 +8,7 @@ const b2cUrl = "mpesa/b2c/v1/paymentrequest"
 const b2bUrl = "mpesa/b2b/v1/paymentrequest"
 const balance = "mpesa/accountbalance/v1/query"
 const transactionStatus = "mpesa/transactionstatus/v1/query"
-
+const registerUrl="mpesa/c2b/v1/registerurl"
 const SandBox string = "sandbox"
 const BusinessPayBill string = "BusinessPayBill"
 const TransactionReversal string = "TransactionReversal"
@@ -48,6 +48,14 @@ func (m *Mpesa) getBalanceUrl() string {
 func (m *Mpesa) getTransactionStatusUrl() string {
 
 	return m.getBaseUrl() + transactionStatus
+
+}
+
+func (m *Mpesa)getC2BRegisterUrl() string {
+
+
+	return m.getBaseUrl() + registerUrl
+
 
 }
 

@@ -50,7 +50,7 @@ func (m *Mpesa) B2BRequest(b2b B2BRequestBody) (*MpesaResult, error) {
 }
 
 //B2C Sends Money from a business to the Customer
-func (m *Mpesa) C2BRequest(b2b B2BRequestBody) (*MpesaResult, error) {
+func (m *Mpesa) C2BRequest(c2 B2BRequestBody) (*MpesaResult, error) {
 
 	return nil, nil
 
@@ -67,6 +67,10 @@ func (m *Mpesa) TransactionStatusRequest(transactionStatusRequestBody Transactio
 	///4 for organization (indentifiertype)
 	return m.sendAndProcessMpesaRequest(m.getTransactionStatusUrl(), transactionStatusRequestBody, nil)
 
+}
+
+func (m *Mpesa) RegisterC2BUrls(C2BURLRequestBody RegisterC2BURLRequestBody) (*MpesaResult, error) {
+	return m.sendAndProcessMpesaRequest(m.getC2BRegisterUrl(), C2BURLRequestBody, nil)
 }
 
 func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHeader map[string]string) (*MpesaResult, error) {
