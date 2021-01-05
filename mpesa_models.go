@@ -95,6 +95,7 @@ type C2BValidationResponse struct {
 	TransID           string
 	TransTime         string
 	TransactionType  string
+
 }
 
 type MpesaResult struct {
