@@ -71,6 +71,32 @@ type RegisterC2BURLRequestBody struct {
 	ShortCode       string
 }
 
+type C2BSimulationRequestBody struct {
+	CommandID string
+	Amount    string
+	///phone number
+	Msisdn string
+	///optional
+	BillRefNumber string
+	ShortCode     string
+}
+
+type C2BValidationResponse struct {
+	BillRefNumber     string
+	BusinessShortCode string
+	FirstName         string
+	InvoiceNumber     string
+	LastName          string
+	MSISDN            string
+	MiddleName        string
+	OrgAccountBalance string
+	ThirdPartyTransID string
+	TransAmount       string
+	TransID           string
+	TransTime         string
+	TransactionType  string
+}
+
 type MpesaResult struct {
 	ConversationID           string `json:"ConversationID"`
 	OriginatorConversationID string `json:"OriginatorConversationID"`

@@ -73,6 +73,14 @@ func (m *Mpesa) RegisterC2BUrls(C2BURLRequestBody RegisterC2BURLRequestBody) (*M
 	return m.sendAndProcessMpesaRequest(m.getC2BRegisterUrl(), C2BURLRequestBody, nil)
 }
 
+
+func (m *Mpesa)SimulateC2BTransaction(c2BSimulationRequestBody C2BSimulationRequestBody)(*MpesaResult,error){
+
+return  m.sendAndProcessMpesaRequest(m.getC2BSimulationUrl(),c2BSimulationRequestBody,nil)
+
+
+}
+
 func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHeader map[string]string) (*MpesaResult, error) {
 	token, err := m.GetAccessToken()
 	if err != nil {

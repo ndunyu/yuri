@@ -9,19 +9,10 @@ const b2bUrl = "mpesa/b2b/v1/paymentrequest"
 const balance = "mpesa/accountbalance/v1/query"
 const transactionStatus = "mpesa/transactionstatus/v1/query"
 const registerUrl="mpesa/c2b/v1/registerurl"
-const SandBox string = "sandbox"
-const BusinessPayBill string = "BusinessPayBill"
-const TransactionReversal string = "TransactionReversal"
-const SalaryPayment string = "SalaryPayment"
-const BusinessPayment string = "BusinessPayment"
-const PromotionPayment string = "PromotionPayment"
-const AccountBalance string = "AccountBalance"
-const CustomerPayBillOnline string = "CustomerPayBillOnline"
-const TransactionStatusQuery string = "TransactionStatusQuery"
-const BusinessBuyGoods string = "BusinessBuyGoods"
+const simulateC2BUrl="mpesa/c2b/v1/simulate"
 
-//Production environment
-const Production string = "production"
+
+
 
 func (m *Mpesa) getAccessTokenUrl() string {
 
@@ -58,6 +49,10 @@ func (m *Mpesa)getC2BRegisterUrl() string {
 
 
 }
+func(m *Mpesa)getC2BSimulationUrl()string{
+return  m.getBaseUrl()+simulateC2BUrl
+
+}
 
 func (m *Mpesa) getBaseUrl() string {
 	if !m.Live {
@@ -68,3 +63,4 @@ func (m *Mpesa) getBaseUrl() string {
 	return MpesaLiveUrl
 
 }
+
