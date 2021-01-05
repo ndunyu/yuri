@@ -81,7 +81,7 @@ type C2BSimulationRequestBody struct {
 	ShortCode     string
 }
 
-type C2BValidationResponse struct {
+type C2BValidationAndConfirmationResponse struct {
 	BillRefNumber     string
 	BusinessShortCode string
 	FirstName         string
@@ -94,8 +94,7 @@ type C2BValidationResponse struct {
 	TransAmount       string
 	TransID           string
 	TransTime         string
-	TransactionType  string
-
+	TransactionType   string
 }
 
 type MpesaResult struct {
