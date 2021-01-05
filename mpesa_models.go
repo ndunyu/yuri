@@ -5,6 +5,18 @@ type AccessTokenResponse struct {
 	ExpiresIn   string `json:"expires_in"`
 }
 
+
+// MpesaResponse is returned by every mpesa api
+// Here
+// i.e that is when we call Mpesa.sendAndProcessMpesaRequest
+type MpesaResult struct {
+	ConversationID           string `json:"ConversationID"`
+	OriginatorConversationID string `json:"OriginatorConversationID"`
+	ResponseCode             string `json:"ResponseCode"`
+	ResponseDescription      string `json:"ResponseDescription"`
+}
+
+
 type B2CRequestBody struct {
 	InitiatorName      string
 	SecurityCredential string
@@ -34,14 +46,21 @@ type B2BRequestBody struct {
 }
 
 type AccountBalanceRequestBody struct {
-	Initiator          string
+	Initiator string
+	//see https://developer.safaricom.co.ke/docs#security-credentials
 	SecurityCredential string
-	CommandID          string
-	PartyA             string
-	IdentifierType     string
-	Remarks            string
-	ResultURL          string
-	QueueTimeOutURL    string
+	// You don't have to pass
+	//this we have already set it to AccountBalance
+	CommandID string
+	// this is your shortcode i.e Paybill or till number
+	PartyA string
+	// use PayBillIdentifier for paybill
+	// use TillNumberIdentifier for TillNumber
+	IdentifierType string
+	Remarks        string
+	// url to receive the results
+	ResultURL       string
+	QueueTimeOutURL string
 }
 
 ////Transaction Status
@@ -99,6 +118,8 @@ type C2BValidationAndConfirmationResponse struct {
 
 /// this is what
 // C2BValidatedResponse you send back to mpesa after receiving the validation
+//from c2B api
+//
 // request to Time confirm if it is okay
 //
 type C2BValidatedResponse struct {
@@ -113,13 +134,8 @@ type C2BValidatedResponse struct {
 	ThirdPartyTransID string
 }
 
-type MpesaResult struct {
-	ConversationID           string `json:"ConversationID"`
-	OriginatorConversationID string `json:"OriginatorConversationID"`
-	ResponseCode             string `json:"ResponseCode"`
-	ResponseDescription      string `json:"ResponseDescription"`
-}
 
+// This is response sent when we are checkig the status of a transaction
 type MpesaTransactionStatus struct {
 	//////
 	Result MpesaTransactionResult
@@ -130,6 +146,10 @@ type MpesaTransactionResult struct {
 	ReferenceData BalanceReferenceData
 }
 
+// MpesaBalance is what is returned to the resulturl
+// you set the result url in your AccountBalanceRequestBody.ResultURL
+// you query for your balance using the balance
+// api  ....
 type MpesaBalance struct {
 	Result BalanceResult `json:"Result"`
 }
@@ -142,36 +162,28 @@ type BalanceResult struct {
 
 	ReferenceData BalanceReferenceData `json:"ReferenceData"`
 }
+//end of balance result
 
+// MpesaB2BResponse is what is returned to the B2BRequestBody.ResultURL
+// you set the result url in your AccountBalanceRequestBody.ResultURL
+// This is when using the B2B api
 type MpesaB2BResponse struct {
 	Result MpesaB2BResult `json:"Result"`
-}
-
-type B2BReferenceData struct {
-	ReferenceItem []ReferenceItem `json:"ReferenceItem"`
 }
 type MpesaB2BResult struct {
 	Result
 
 	ReferenceData B2BReferenceData `json:"ReferenceData"`
 }
+type B2BReferenceData struct {
+	ReferenceItem []ReferenceItem `json:"ReferenceItem"`
+}
+
+////End of B2B result
+
 
 type MpesaResponse struct {
 	Result Result `json:"Result"`
-}
-type ReferenceItem struct {
-	Key   string      `json:"Key"`
-	Value interface{} `json:"Value,omitempty"`
-}
-type ReferenceData struct {
-	ReferenceItem []ReferenceItem `json:"ReferenceItem"`
-}
-type ResultParameter struct {
-	Key   string      `json:"Key"`
-	Value interface{} `json:"Value,omitempty"`
-}
-type ResultParameters struct {
-	ResultParameter []ResultParameter `json:"ResultParameter"`
 }
 type Result struct {
 	ConversationID string `json:"ConversationID"`
@@ -188,4 +200,18 @@ type Result struct {
 
 	//ReferenceData            ReferenceData    `json:"ReferenceData"`
 
+}
+type ReferenceItem struct {
+	Key   string      `json:"Key"`
+	Value interface{} `json:"Value,omitempty"`
+}
+type ReferenceData struct {
+	ReferenceItem []ReferenceItem `json:"ReferenceItem"`
+}
+type ResultParameter struct {
+	Key   string      `json:"Key"`
+	Value interface{} `json:"Value,omitempty"`
+}
+type ResultParameters struct {
+	ResultParameter []ResultParameter `json:"ResultParameter"`
 }

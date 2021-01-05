@@ -35,29 +35,34 @@ func (m *Mpesa) SetMode(mode bool) {
 
 }
 
-//B2C Sends Money from a business to the Customer
+// B2CRequest Sends Money from a business to the Customer
 func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*MpesaResult, error) {
 
 	return m.sendAndProcessMpesaRequest(m.getB2CUrl(), b2c, nil)
 
 }
 
-//B2C Sends Money from a business to the Customer
+// B2BRequest Sends Money from a business to the business
+// I.e from onePayBill to another
 func (m *Mpesa) B2BRequest(b2b B2BRequestBody) (*MpesaResult, error) {
 
 	return m.sendAndProcessMpesaRequest(m.getB2BUrl(), b2b, nil)
 
 }
 
-//B2C Sends Money from a business to the Customer
-func (m *Mpesa) C2BRequest(c2 B2BRequestBody) (*MpesaResult, error) {
+//C2BRequest Sends Money from a business to the Customer
+///func (m *Mpesa) C2BRequest(c2 B2BRequestBody) (*MpesaResult, error) {
 
-	return nil, nil
+///return nil, nil
 
-}
+///}
 
+// use AccountBalance as the CommandID
+// use AccountBalanceRequestBody.indentifier as 4 if its shortcode
+//
 func (m *Mpesa) AccountBalanceRequest(balance AccountBalanceRequestBody) (*MpesaResult, error) {
-
+	balance.CommandID=AccountBalance
+	//
 	return m.sendAndProcessMpesaRequest(m.getBalanceUrl(), balance, nil)
 
 }
@@ -73,11 +78,9 @@ func (m *Mpesa) RegisterC2BUrls(C2BURLRequestBody RegisterC2BURLRequestBody) (*M
 	return m.sendAndProcessMpesaRequest(m.getC2BRegisterUrl(), C2BURLRequestBody, nil)
 }
 
+func (m *Mpesa) SimulateC2BTransaction(c2BSimulationRequestBody C2BSimulationRequestBody) (*MpesaResult, error) {
 
-func (m *Mpesa)SimulateC2BTransaction(c2BSimulationRequestBody C2BSimulationRequestBody)(*MpesaResult,error){
-
-return  m.sendAndProcessMpesaRequest(m.getC2BSimulationUrl(),c2BSimulationRequestBody,nil)
-
+	return m.sendAndProcessMpesaRequest(m.getC2BSimulationUrl(), c2BSimulationRequestBody, nil)
 
 }
 

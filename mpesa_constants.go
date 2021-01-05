@@ -11,3 +11,10 @@ const TransactionStatusQuery string = "TransactionStatusQuery"
 const BusinessBuyGoods string = "BusinessBuyGoods"
 //Production environment
 const Production string = "production"
+
+
+// Identifier Types
+// see https://developer.safaricom.co.ke/docs#identifier-types
+const PayBillIdentifier="4"
+const TillNumberIdentifier="2"
+const MSISDNIdentifier="1"
