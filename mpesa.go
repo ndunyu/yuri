@@ -37,6 +37,10 @@ func (m *Mpesa) SetMode(mode bool) {
 
 // B2CRequest Sends Money from a business to the Customer
 func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*MpesaResult, error) {
+	if b2c.CommandID=="" {
+
+		b2c.CommandID=BusinessPayment
+	}
 
 	return m.sendAndProcessMpesaRequest(m.getB2CUrl(), b2c, nil)
 
@@ -45,6 +49,7 @@ func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*MpesaResult, error) {
 // B2BRequest Sends Money from a business to the business
 // I.e from onePayBill to another
 func (m *Mpesa) B2BRequest(b2b B2BRequestBody) (*MpesaResult, error) {
+
 
 	return m.sendAndProcessMpesaRequest(m.getB2BUrl(), b2b, nil)
 
