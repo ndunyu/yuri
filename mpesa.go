@@ -138,7 +138,7 @@ func getRequest(url string, headers map[string]string) (*http.Response, error) {
 
 	req.Header.Add("Accept", "application/json")
 	req.Header.Set("Accept", "application/json")
-	client := &http.Client{Timeout: 15 * time.Second}
+	client := &http.Client{Timeout: 20 * time.Second}
 	return client.Do(req)
 
 }

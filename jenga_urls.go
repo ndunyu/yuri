@@ -3,6 +3,7 @@ package yuri
 const jengaTokenUrl = "identity/v2/token"
 const jengaKycUrl = "customer/v2/identity/verify"
 const jengaAirTimeUrl = "transaction/v2/airtime"
+const jengaBankToMobileWalletUrl="transaction/v2/remittance#sendmobile"
 const JengaLiveUrl = "https://uat.jengahq.io/"
 const JengaSandboxUrl = "https://uat.jengahq.io/"
 func (J *Jenga) getBaseUrl() string {
@@ -13,6 +14,11 @@ func (J *Jenga) getBaseUrl() string {
 
 	return JengaLiveUrl
 
+}
+
+func (J *Jenga)getBankToMobileWalletUrl() string {
+
+	return J.getBaseUrl()+jengaBankToMobileWalletUrl
 }
 
 func (J *Jenga)getAirTimeUrl() string {

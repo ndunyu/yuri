@@ -34,24 +34,36 @@ func NewJenga(Username, Password, ApiKey, MerchantCode, PrivateKeyPath string, l
 
 }
 
-func (J *Jenga) BankToMobileMoneyTransfer(bankToMobileMoneyRequest BankToMobileMoneyRequest) {
+func (J *Jenga) BankToMobileMoneyTransfer(request BankToMobileMoneyRequest) (*SendMoneyResponse, error) {
+	var sendMoneyResponse SendMoneyResponse
+	request.Destination.Type="mobile"
+	request.Transfer.Type="MobileWallet"
+	var sigString string
+	if request.Destination.WalletName == Equitel {
+		sigString = joinStrings(request.Transfer.Amount, request.Transfer.CurrencyCode, request.Transfer.Reference, request.Source.AccountNumber)
+	} else {
+		sigString = joinStrings(request.Source.AccountNumber, request.Transfer.Amount, request.Transfer.CurrencyCode, request.Transfer.Reference)
+	}
+  log.Println(sigString)
+	err := J.sendAndProcessJengaRequest(J.getBankToMobileWalletUrl(), sigString, request, &sendMoneyResponse, nil)
+	return &sendMoneyResponse, err
 
 }
 
 func (J *Jenga) PurchaseAirtime(airtimeRequest AirtimeRequest) (*AirtimeResponse, error) {
 
 	var airTimeResponse AirtimeResponse
-	sigString := J.MerchantCode + airtimeRequest.Airtime.Telco + airtimeRequest.Airtime.Amount + airtimeRequest.Airtime.Reference
-	signature, err := SignSha256DataWithPrivateKey(sigString, J.PrivateKeyPath)
-	if err != nil {
-
-		return nil, err
-	}
-	headers := make(map[string]string)
-	headers["signature"] = signature
-	err = J.sendAndProcessJengaRequest(J.getAirTimeUrl(), airtimeRequest, &airTimeResponse, headers)
+	sigString := joinStrings(J.MerchantCode, airtimeRequest.Airtime.Telco, airtimeRequest.Airtime.Amount, airtimeRequest.Airtime.Reference) /// J.MerchantCode + airtimeRequest.Airtime.Telco + airtimeRequest.Airtime.Amount + airtimeRequest.Airtime.Reference
+	err := J.sendAndProcessJengaRequest(J.getAirTimeUrl(), sigString, airtimeRequest, &airTimeResponse, nil)
 	return &airTimeResponse, err
 
+}
+func joinStrings(items ...string) string {
+	var joinedString string
+	for _, item := range items {
+		joinedString = joinedString + item
+	}
+	return joinedString
 }
 
 //will verify users
@@ -59,16 +71,8 @@ func (J *Jenga) PurchaseAirtime(airtimeRequest AirtimeRequest) (*AirtimeResponse
 func (J *Jenga) VerifyUserKyc(identityRequestBody IdentityRequestBody) (*IdentityResponseBody, error) {
 
 	var identityResponseBody IdentityResponseBody
-	sigString := J.MerchantCode + identityRequestBody.Identity.DocumentNumber + identityRequestBody.Identity.CountryCode
-	signature, err := SignSha256DataWithPrivateKey(sigString, J.PrivateKeyPath)
-	if err != nil {
-
-		return nil, err
-	}
-
-	headers := make(map[string]string)
-	headers["signature"] = signature
-	err = J.sendAndProcessJengaRequest(J.getKycUrl(), identityRequestBody, &identityResponseBody, headers)
+	sigString := joinStrings(J.MerchantCode, identityRequestBody.Identity.DocumentNumber, identityRequestBody.Identity.CountryCode)
+	err := J.sendAndProcessJengaRequest(J.getKycUrl(), sigString, identityRequestBody, &identityResponseBody, nil)
 	return &identityResponseBody, err
 }
 
@@ -106,7 +110,7 @@ func (J *Jenga) GetAccessToken() (*JengaAccessToken, error) {
 }
 
 //make sure response is a pointer
-func (J *Jenga) sendAndProcessJengaRequest(url string, data interface{}, response interface{}, extraHeader map[string]string) error {
+func (J *Jenga) sendAndProcessJengaRequest(url, sigString string, data interface{}, response interface{}, extraHeader map[string]string) error {
 
 	if reflect.ValueOf(response).Kind() != reflect.Ptr {
 		log.Println("not a pointer")
@@ -118,7 +122,13 @@ func (J *Jenga) sendAndProcessJengaRequest(url string, data interface{}, respons
 	if err != nil {
 		return err
 	}
+	signature, err := SignSha256DataWithPrivateKey(sigString, J.PrivateKeyPath)
+	if err != nil {
+
+		return err
+	}
 	headers := make(map[string]string)
+	headers["signature"] = signature
 	headers["Content-Type"] = "application/json"
 	headers["Authorization"] = "Bearer " + token.AccessToken
 	for k, v := range extraHeader {
@@ -137,10 +147,13 @@ func (J *Jenga) sendAndProcessJengaRequest(url string, data interface{}, respons
 		return &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+	var dt map[string]interface{}
+
+	if err := json.NewDecoder(resp.Body).Decode(&dt); err != nil {
 
 		return errors.New("error converting from json")
 	}
 
+	PrintStruct(dt)
 	return nil
 }
