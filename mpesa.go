@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -37,9 +38,9 @@ func (m *Mpesa) SetMode(mode bool) {
 
 // B2CRequest Sends Money from a business to the Customer
 func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*MpesaResult, error) {
-	if b2c.CommandID=="" {
+	if b2c.CommandID == "" {
 
-		b2c.CommandID=BusinessPayment
+		b2c.CommandID = BusinessPayment
 	}
 
 	return m.sendAndProcessMpesaRequest(m.getB2CUrl(), b2c, nil)
@@ -49,7 +50,6 @@ func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*MpesaResult, error) {
 // B2BRequest Sends Money from a business to the business
 // I.e from onePayBill to another
 func (m *Mpesa) B2BRequest(b2b B2BRequestBody) (*MpesaResult, error) {
-
 
 	return m.sendAndProcessMpesaRequest(m.getB2BUrl(), b2b, nil)
 
@@ -66,7 +66,7 @@ func (m *Mpesa) B2BRequest(b2b B2BRequestBody) (*MpesaResult, error) {
 // use AccountBalanceRequestBody.indentifier as 4 if its shortcode
 //
 func (m *Mpesa) AccountBalanceRequest(balance AccountBalanceRequestBody) (*MpesaResult, error) {
-	balance.CommandID=AccountBalance
+	balance.CommandID = AccountBalance
 	//
 	return m.sendAndProcessMpesaRequest(m.getBalanceUrl(), balance, nil)
 
@@ -115,23 +115,33 @@ func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHe
 
 	}
 	var response MpesaResult
-
+	///var respe map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 
 		PrintStruct(err)
 		return nil, errors.New("error converting from json")
 	}
-
+	///PrintStruct(respe)
 	return &response, nil
 
 }
 
-func getRequest(url string, headers map[string]string) (*http.Response, error) {
+func getRequest(url string, headers map[string]string, queryParameters map[string]string) (*http.Response, error) {
 	///requestBody, err := json.Marshal(data)
+
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(req.URL.String())
+	for key, value := range queryParameters {
+		q := req.URL.Query()
+		q.Add(key, value)
+		req.URL.RawQuery = q.Encode()
+
+	}
+	fmt.Println(req.URL.String())
+
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}
@@ -201,7 +211,7 @@ func (m *Mpesa) GetSecurityCredential(initiatorPassword string) (string, error) 
 		log.Println("herre")
 
 	}
-	resp, err := getRequest(fileName, nil)
+	resp, err := getRequest(fileName, nil, nil)
 	if err != nil {
 		return "", err
 	}

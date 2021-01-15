@@ -124,4 +124,8 @@ type Transfer struct {
 type SendMoneyResponse struct {
 	TransactionID string `json:"transactionId"`
 	Status        string `json:"status"`
+	ResponseStatus  string `json:"response_status"`
+	ResponseMsg string `json:"response_msg"`
+	ResponseCode string `json:"response_code"`
+
 }
