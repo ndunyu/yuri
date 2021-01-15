@@ -21,3 +21,5 @@ const MSISDNIdentifier="1"
 
 ///mpesa types
 const C2B string="c2b"
+const B2B string="b2b"
+
