@@ -110,7 +110,8 @@ type C2BValidationAndConfirmationResponse struct {
 	MiddleName        string
 	OrgAccountBalance string
 	ThirdPartyTransID string
-	TransAmount       string
+	///This should be string
+	TransAmount       float64
 	TransID           string
 	TransTime         string
 	TransactionType   string
