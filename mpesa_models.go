@@ -5,17 +5,17 @@ type AccessTokenResponse struct {
 	ExpiresIn   string `json:"expires_in"`
 }
 
-
 // MpesaResponse is returned by every mpesa api
 // Here
 // i.e that is when we call Mpesa.sendAndProcessMpesaRequest
 type MpesaResult struct {
 	ConversationID           string `json:"ConversationID"`
-	OriginatorConversationID string `json:"OriginatorConversationID"`
+	OriginatorCoversationID string `json:"OriginatorCoversationID"`
+	/// OriginatorConversationID string `json:"OriginatorConversationID"`
 	ResponseCode             string `json:"ResponseCode"`
-	ResponseDescription      string `json:"ResponseDescription"`
+	ResponseDescription   string `json:"ResponseDescription"`
+	///ResponseDescription      string `json:"ResponseDescription"`
 }
-
 
 type B2CRequestBody struct {
 	InitiatorName      string
@@ -134,7 +134,6 @@ type C2BValidatedResponse struct {
 	ThirdPartyTransID string
 }
 
-
 // This is response sent when we are checkig the status of a transaction
 type MpesaTransactionStatus struct {
 	//////
@@ -162,6 +161,7 @@ type BalanceResult struct {
 
 	ReferenceData BalanceReferenceData `json:"ReferenceData"`
 }
+
 //end of balance result
 
 // MpesaB2BResponse is what is returned to the B2BRequestBody.ResultURL
@@ -180,7 +180,6 @@ type B2BReferenceData struct {
 }
 
 ////End of B2B result
-
 
 type MpesaResponse struct {
 	Result Result `json:"Result"`
