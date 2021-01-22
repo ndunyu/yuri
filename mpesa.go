@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -44,7 +45,9 @@ func (m *Mpesa)StkPushRequest(body StKPushRequestBody, passKey string) (*StkPush
 		body.Password=GeneratePassword(body.BusinessShortCode,passKey, fTime)
 	}
 	body.TransactionType=CustomerPayBillOnline
-	return  m.sendAndProcessStkPushRequest(m.getStkPush(),body,nil)
+	var stkPushResult StkPushResult
+	err:=m.sendAndProcessStkPushRequest(m.getStkPush(),body,&stkPushResult,nil)
+	return  &stkPushResult,err
 }
 
 func (m *Mpesa)StkPushQuery(body StkPushQueryRequestBody,passKey string)(*StkPushQueryResponseBody, error){
@@ -56,7 +59,10 @@ func (m *Mpesa)StkPushQuery(body StkPushQueryRequestBody,passKey string)(*StkPus
 		body.Password=GeneratePassword(body.BusinessShortCode,passKey, fTime)
 	}
 
-	return m.sendAndProcessStkPushQueryRequest(m.getStkPushQuery(),body,nil)
+	var stkPushResult StkPushQueryResponseBody
+	err:=m.sendAndProcessStkPushRequest(m.getStkPush(),body,&stkPushResult,nil)
+	return  &stkPushResult,err
+
 
 
 
@@ -157,11 +163,18 @@ func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHe
 
 }
 
-func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{}, extraHeader map[string]string) (*StkPushResult, error) {
+func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{},respItem interface{}, extraHeader map[string]string) (error) {
+	if reflect.ValueOf(respItem).Kind() != reflect.Ptr {
+		log.Println("not a pointer")
+
+		return errors.New("response should be a pointer")
+
+	}
+
 	token, err := m.GetAccessToken()
 	if err != nil {
 		log.Println("ahhaa")
-		return nil, err
+		return  err
 	}
 	log.Println(token.AccessToken)
 	headers := make(map[string]string)
@@ -175,69 +188,26 @@ func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{}, extra
 	resp, err := postRequest(url, data, headers)
 	if err != nil {
 
-		return nil, err
+		return  err
 	}
 	defer resp.Body.Close()
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
 		b, _ := ioutil.ReadAll(resp.Body)
 
-		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
+		return  &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
-	var response StkPushResult
+
 	///var respe map[string]interface{}
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(respItem); err != nil {
 
 		PrintStruct(err)
-		return nil, errors.New("error converting from json")
+		return  errors.New("error converting from json")
 	}
 	///PrintStruct(respe)
-	return &response, nil
+	return  nil
 
 }
-
-
-///TODO::Refactor this to use the same as stk push
-///Too much repeated code
-func (m *Mpesa) sendAndProcessStkPushQueryRequest(url string, data interface{}, extraHeader map[string]string) (*StkPushQueryResponseBody, error) {
-	token, err := m.GetAccessToken()
-	if err != nil {
-		log.Println("ahhaa")
-		return nil, err
-	}
-	log.Println(token.AccessToken)
-	headers := make(map[string]string)
-	headers["Content-Type"] = "application/json"
-	headers["Authorization"] = "Bearer " + token.AccessToken
-	///add the extra headers
-	//Get union of the headers
-	for k, v := range extraHeader {
-		headers[k] = v
-	}
-	resp, err := postRequest(url, data, headers)
-	if err != nil {
-
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
-		b, _ := ioutil.ReadAll(resp.Body)
-
-		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
-
-	}
-	var response StkPushQueryResponseBody
-	///var respe map[string]interface{}
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-
-		PrintStruct(err)
-		return nil, errors.New("error converting from json")
-	}
-	///PrintStruct(respe)
-	return &response, nil
-
-}
-
 
 
 func getRequest(url string, headers map[string]string, queryParameters map[string]string) (*http.Response, error) {
