@@ -41,9 +41,23 @@ type StkCallback struct {
 type Body struct {
 	StkCallback StkCallback `json:"stkCallback"`
 }
+///when querying for success/failure
+type StkPushQueryRequestBody struct {
+	BusinessShortCode	string
+	Password	string
+	Timestamp	string
+	CheckoutRequestID	string
+}
 
+type StkPushQueryResponseBody struct {
+	MerchantRequestID	string
+	CheckoutRequestID	string
+	ResponseCode	string
+	ResultDesc	string
+	ResponseDescription	string
+	ResultCode	string
 
-
+}
 
 
 

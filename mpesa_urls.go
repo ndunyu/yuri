@@ -11,6 +11,7 @@ const transactionStatus = "mpesa/transactionstatus/v1/query"
 const registerUrl="mpesa/c2b/v1/registerurl"
 const simulateC2BUrl="mpesa/c2b/v1/simulate"
 const stkPush="mpesa/stkpush/v1/processrequest"
+const stkPushQuery="mpesa/stkpushquery/v1/query"
 
 
 
@@ -18,6 +19,11 @@ const stkPush="mpesa/stkpush/v1/processrequest"
 func (m *Mpesa) getStkPush() string {
 
 	return m.getBaseUrl() + stkPush
+
+}
+func (m *Mpesa) getStkPushQuery() string {
+
+	return m.getBaseUrl() + stkPushQuery
 
 }
 func (m *Mpesa) getAccessTokenUrl() string {

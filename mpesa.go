@@ -45,9 +45,18 @@ func (m *Mpesa)StkPushRequest(body StKPushRequestBody, passKey string) (*StkPush
 	}
 	body.TransactionType=CustomerPayBillOnline
 	return  m.sendAndProcessStkPushRequest(m.getStkPush(),body,nil)
+}
 
+func (m *Mpesa)StkPushQuery(body StkPushQueryRequestBody,passKey string)(*StkPushQueryResponseBody, error){
 
+	if body.Timestamp=="" {
+		t := time.Now()
+		fTime := t.Format("20060102150405")
+		body.Timestamp= fTime
+		body.Password=GeneratePassword(body.BusinessShortCode,passKey, fTime)
+	}
 
+	return m.sendAndProcessStkPushQueryRequest(m.getStkPushQuery(),body,nil)
 
 
 
@@ -151,8 +160,10 @@ func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHe
 func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{}, extraHeader map[string]string) (*StkPushResult, error) {
 	token, err := m.GetAccessToken()
 	if err != nil {
+		log.Println("ahhaa")
 		return nil, err
 	}
+	log.Println(token.AccessToken)
 	headers := make(map[string]string)
 	headers["Content-Type"] = "application/json"
 	headers["Authorization"] = "Bearer " + token.AccessToken
@@ -187,6 +198,44 @@ func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{}, extra
 
 
 
+func (m *Mpesa) sendAndProcessStkPushQueryRequest(url string, data interface{}, extraHeader map[string]string) (*StkPushQueryResponseBody, error) {
+	token, err := m.GetAccessToken()
+	if err != nil {
+		log.Println("ahhaa")
+		return nil, err
+	}
+	log.Println(token.AccessToken)
+	headers := make(map[string]string)
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + token.AccessToken
+	///add the extra headers
+	//Get union of the headers
+	for k, v := range extraHeader {
+		headers[k] = v
+	}
+	resp, err := postRequest(url, data, headers)
+	if err != nil {
+
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
+		b, _ := ioutil.ReadAll(resp.Body)
+
+		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
+
+	}
+	var response StkPushQueryResponseBody
+	///var respe map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+
+		PrintStruct(err)
+		return nil, errors.New("error converting from json")
+	}
+	///PrintStruct(respe)
+	return &response, nil
+
+}
 
 
 
@@ -238,12 +287,15 @@ func postRequest(url string, data interface{}, headers map[string]string) (*http
 
 }
 
+
+
 //GetAccessToken will get the token to be used to query data
 func (m *Mpesa) GetAccessToken() (*AccessTokenResponse, error) {
 	req, err := http.NewRequest(http.MethodGet, m.getAccessTokenUrl(), nil)
 	if err != nil {
 		return nil, err
 	}
+	log.Println(req.URL.String())
 
 	req.SetBasicAuth(m.ConsumerKey, m.ConsumerSecret)
 
@@ -255,10 +307,17 @@ func (m *Mpesa) GetAccessToken() (*AccessTokenResponse, error) {
 		return nil, err
 	}
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
-		b, _ := ioutil.ReadAll(resp.Body)
+		log.Println(resp.StatusCode)
+
+		b, _:= ioutil.ReadAll(resp.Body)
+		if string(b)=="" {
+			return   nil, &RequestError{Message: "Error getting token", StatusCode: resp.StatusCode}
+
+		}
 		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
+	log.Println("passed here")
 	var token AccessTokenResponse
 	if err := json.NewDecoder(resp.Body).Decode(&token); err != nil {
 
