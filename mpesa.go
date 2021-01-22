@@ -60,7 +60,7 @@ func (m *Mpesa)StkPushQuery(body StkPushQueryRequestBody,passKey string)(*StkPus
 	}
 
 	var stkPushResult StkPushQueryResponseBody
-	err:=m.sendAndProcessStkPushRequest(m.getStkPush(),body,&stkPushResult,nil)
+	err:=m.sendAndProcessStkPushRequest(m.getStkPushQuery(),body,&stkPushResult,nil)
 	return  &stkPushResult,err
 
 
