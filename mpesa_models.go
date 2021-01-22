@@ -55,7 +55,7 @@ type StkPushQueryResponseBody struct {
 	ResponseCode	int
 	ResultDesc	string
 	ResponseDescription	string
-	ResultCode	string
+	ResultCode	int
 
 }
 
