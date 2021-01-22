@@ -52,7 +52,7 @@ type StkPushQueryRequestBody struct {
 type StkPushQueryResponseBody struct {
 	MerchantRequestID	string
 	CheckoutRequestID	string
-	ResponseCode	string
+	ResponseCode	int
 	ResultDesc	string
 	ResponseDescription	string
 	ResultCode	string
