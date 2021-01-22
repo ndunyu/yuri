@@ -34,7 +34,7 @@ type CallbackMetadata struct {
 type StkCallback struct {
 	MerchantRequestID string           `json:"MerchantRequestID"`
 	CheckoutRequestID string           `json:"CheckoutRequestID"`
-	ResultCode        string              `json:"ResultCode"`
+	ResultCode        int              `json:"ResultCode"`
 	ResultDesc        string           `json:"ResultDesc"`
 	CallbackMetadata  CallbackMetadata `json:"CallbackMetadata"`
 }
