@@ -34,7 +34,7 @@ type CallbackMetadata struct {
 type StkCallback struct {
 	MerchantRequestID string           `json:"MerchantRequestID"`
 	CheckoutRequestID string           `json:"CheckoutRequestID"`
-	ResultCode        int              `json:"ResultCode"`
+	ResultCode        string              `json:"ResultCode"`
 	ResultDesc        string           `json:"ResultDesc"`
 	CallbackMetadata  CallbackMetadata `json:"CallbackMetadata"`
 }
@@ -52,10 +52,10 @@ type StkPushQueryRequestBody struct {
 type StkPushQueryResponseBody struct {
 	MerchantRequestID	string
 	CheckoutRequestID	string
-	ResponseCode	int
+	ResponseCode	string
 	ResultDesc	string
 	ResponseDescription	string
-	ResultCode	int
+	ResultCode	string
 
 }
 
@@ -267,7 +267,7 @@ type Result struct {
 	ConversationID string `json:"ConversationID"`
 	ResultType     int    `json:"ResultType"`
 
-	ResultCode int    `json:"ResultCode"`
+	ResultCode string    `json:"ResultCode"`
 	ResultDesc string `json:"ResultDesc"`
 
 	OriginatorConversationID string `json:"OriginatorConversationID"`
