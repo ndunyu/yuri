@@ -5,6 +5,71 @@ type AccessTokenResponse struct {
 	ExpiresIn   string `json:"expires_in"`
 }
 
+
+type StkPushResult struct {
+	///
+	CheckoutRequestID string
+	CustomerMessage string
+	MerchantRequestID string
+	ResponseCode string
+	ResponseDescription string
+
+}
+
+
+
+
+
+
+type StkPushResponseBody struct {
+	Body Body `json:"Body"`
+}
+type Item struct {
+	Name  string `json:"Name"`
+	Value int    `json:"Value,omitempty"`
+}
+type CallbackMetadata struct {
+	Item []Item `json:"Item"`
+}
+type StkCallback struct {
+	MerchantRequestID string           `json:"MerchantRequestID"`
+	CheckoutRequestID string           `json:"CheckoutRequestID"`
+	ResultCode        int              `json:"ResultCode"`
+	ResultDesc        string           `json:"ResultDesc"`
+	CallbackMetadata  CallbackMetadata `json:"CallbackMetadata"`
+}
+type Body struct {
+	StkCallback StkCallback `json:"stkCallback"`
+}
+
+
+
+
+
+
+
+type StKPushRequestBody struct {
+	BusinessShortCode string
+	Password string
+	Timestamp string
+	///use only [ CustomerPayBillOnline ]
+	TransactionType string
+	Amount string
+	//sender phone number
+	PartyA string
+	///receiver shortcode
+	PartyB string
+	////Sending funds
+	PhoneNumber string
+	///
+	CallBackURL string
+	///use this with paybill
+	AccountReference string
+	//
+	TransactionDesc string
+
+
+}
 // MpesaResponse is returned by every mpesa api
 // Here
 // i.e that is when we call Mpesa.sendAndProcessMpesaRequest
