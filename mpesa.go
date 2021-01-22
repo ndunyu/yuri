@@ -197,7 +197,8 @@ func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{}, extra
 }
 
 
-
+///TODO::Refactor this to use the same as stk push
+///Too much repeated code
 func (m *Mpesa) sendAndProcessStkPushQueryRequest(url string, data interface{}, extraHeader map[string]string) (*StkPushQueryResponseBody, error) {
 	token, err := m.GetAccessToken()
 	if err != nil {
