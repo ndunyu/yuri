@@ -26,7 +26,7 @@ type StkPushResponseBody struct {
 }
 type Item struct {
 	Name  string `json:"Name"`
-	Value string   `json:"Value,omitempty"`
+	Value interface{}   `json:"Value,omitempty"`
 }
 type CallbackMetadata struct {
 	Item []Item `json:"Item"`
