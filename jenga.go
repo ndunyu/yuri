@@ -9,7 +9,6 @@ import (
 	"net/url"
 	"reflect"
 	"strings"
-	"time"
 )
 
 type Jenga struct {
@@ -106,7 +105,9 @@ func (J *Jenga) GetAccessToken() (*JengaAccessToken, error) {
 	}
 	req.Header.Add("Authorization", "Basic "+J.ApiKey)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	client := &http.Client{Timeout: 15 * time.Second}
+	client := &http.Client{
+		///Timeout: 15 * time.Second
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err

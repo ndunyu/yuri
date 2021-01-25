@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 const LiveUrl = "https://api.africastalking.com/version1/messaging"
@@ -95,7 +94,9 @@ func (a *AfricaTalking) postRequest(url string, data url.Values, headers map[str
 	req.Header.Add("Accept", "application/json")
 	req.Header.Set("apikey", a.ApiKey)
 	req.Header.Set("Accept", "application/json")
-	client := &http.Client{Timeout: 15 * time.Second}
+	client := &http.Client{
+		///Timeout: 15 * time.Second
+	}
 	return client.Do(req)
 
 }

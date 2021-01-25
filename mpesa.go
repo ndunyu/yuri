@@ -79,7 +79,7 @@ func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*MpesaResult, error) {
 		b2c.CommandID = BusinessPayment
 	}
 
-	return m.sendAndProcessMpesaRequest(m.getB2CUrl(), b2c, nil)
+	return m.sendAndProcessMpesaRequest("https://api.safaricom.co.ke/mpesa/b2c/v1/paymentrequest", b2c, nil)
 
 }
 
@@ -134,16 +134,20 @@ func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHe
 	headers := make(map[string]string)
 	headers["Content-Type"] = "application/json"
 	headers["Authorization"] = "Bearer " + token.AccessToken
+
 	///add the extra headers
 	//Get union of the headers
 	for k, v := range extraHeader {
 		headers[k] = v
 	}
+
 	resp, err := postRequest(url, data, headers)
 	if err != nil {
 
 		return nil, err
 	}
+
+
 	defer resp.Body.Close()
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
 		b, _ := ioutil.ReadAll(resp.Body)
@@ -179,6 +183,8 @@ func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{},respIt
 	log.Println(token.AccessToken)
 	headers := make(map[string]string)
 	headers["Content-Type"] = "application/json"
+	///auth := "Bearer " + token.AccessToken
+	//headers["authorization"]= auth
 	headers["Authorization"] = "Bearer " + token.AccessToken
 	///add the extra headers
 	//Get union of the headers
@@ -232,7 +238,10 @@ func getRequest(url string, headers map[string]string, queryParameters map[strin
 
 	req.Header.Add("Accept", "application/json")
 	req.Header.Set("Accept", "application/json")
-	client := &http.Client{Timeout: 20 * time.Second}
+	client := &http.Client{
+		//Timeout: 20 * time.Second
+
+	}
 	return client.Do(req)
 
 }
@@ -253,7 +262,12 @@ func postRequest(url string, data interface{}, headers map[string]string) (*http
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}
-	client := &http.Client{Timeout: 15 * time.Second}
+	log.Println("here print")
+	log.Println(req.URL.String())
+	log.Println(req.Header)
+	client := &http.Client{
+		//Timeout: 15 * time.Second
+	}
 	return client.Do(req)
 
 }
@@ -272,7 +286,10 @@ func (m *Mpesa) GetAccessToken() (*AccessTokenResponse, error) {
 
 	req.Header.Add("Accept", "application/json")
 	req.Header.Set("Accept", "application/json")
-	client := &http.Client{Timeout: 15 * time.Second}
+	client := &http.Client{
+		///Timeout: 15 * time.Second
+
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -290,10 +307,13 @@ func (m *Mpesa) GetAccessToken() (*AccessTokenResponse, error) {
 	}
 	log.Println("passed here")
 	var token AccessTokenResponse
+
 	if err := json.NewDecoder(resp.Body).Decode(&token); err != nil {
 
 		return nil, errors.New("error converting from json")
 	}
+	log.Println(token.AccessToken)
+	log.Println("token is here")
 	return &token, nil
 }
 func (m *Mpesa) GetSecurityCredential(initiatorPassword string) (string, error) {
