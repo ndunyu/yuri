@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/ttacon/libphonenumber"
 	"log"
 	"math/rand"
 	"net/http"
@@ -188,6 +189,16 @@ func checkKenyaInternationalPhoneNumber(phone string) bool {
 	return re.MatchString(phone)
 }
 
+
+func FormatNumberToInternationalFormat(phoneNumber, region string) (string, error) {
+	num, err := libphonenumber.Parse(phoneNumber, region)
+	if err != nil {
+		return "", err
+
+	}
+	formatted := libphonenumber.Format(num, libphonenumber.E164)
+	return formatted,nil
+}
 
 func CreateGid() string {
 
