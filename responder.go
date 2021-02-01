@@ -4,7 +4,6 @@ package yuri
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
@@ -16,7 +15,7 @@ type ResponseData struct {
 
 func JsonResponder(w http.ResponseWriter, r *http.Request, item interface{}, err *ErrResponse) {
 	if err != nil {
-		log.Println("here")
+
 		http.Error(w, err.StatusText, err.HTTPStatusCode)
 		return
 	}

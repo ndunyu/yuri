@@ -103,7 +103,5 @@ func (r *rsaPrivateKey) SignSHA256(data []byte) ([]byte, error) {
 	h := sha256.New()
 	h.Write(data)
 	d := h.Sum(nil)
-	println("the private key is")
-	println(string(data))
 	return rsa.SignPKCS1v15(rand.Reader, r.PrivateKey, crypto.SHA256, d)
 }

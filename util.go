@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/ttacon/libphonenumber"
-	"log"
 	"math/rand"
 	"net/http"
 	"regexp"
@@ -44,7 +43,7 @@ func MakeIntPin(min, max, n int) int {
 func CheckTokenId(r *http.Request, JwtSecretKey []byte) (int, error) {
 
 	authHeader := r.Header.Get("Authorization")
-	log.Println("below")
+
 	if authHeader == "" {
 
 		return 0, errors.New("authorized")
@@ -53,7 +52,7 @@ func CheckTokenId(r *http.Request, JwtSecretKey []byte) (int, error) {
 	splitToken := strings.Split(authHeader, "Bearer")
 	authHeader = splitToken[1]
 	sentToken := strings.TrimSpace(authHeader)
-	log.Println(sentToken)
+
 
 	if sentToken == "" {
 

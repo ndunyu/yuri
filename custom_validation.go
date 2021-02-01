@@ -24,10 +24,7 @@ func TranslateErrors(trans ut.Translator, err error) []Field {
 			//Field:   m,
 			Message:e.Translate(trans) ,
 		}
-		///fmt.Println(e.Namespace())
-		//fmt.Println(e.StructField())
-		//fmt.Println(e.Field())
-		//fmt.Println(e.Tag())
+
 
 		em = append(em, f)
 

@@ -201,12 +201,14 @@ func (J *Jenga) sendAndProcessJengaRequest(url, sigString string, data interface
 	}
 	defer resp.Body.Close()
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
+
+
 		b, _ := ioutil.ReadAll(resp.Body)
 
 		return &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
-	///var dt map[string]interface{}
+
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 

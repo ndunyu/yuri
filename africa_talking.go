@@ -50,8 +50,7 @@ func (a *AfricaTalking) SendSms(to, message string) (*AfricaTalkingResponse, err
 	defer resp.Body.Close()
 	var response AfricaTalkingResponse
 
-	PrintStruct("Response code is: ")
-	PrintStruct(resp.Status)
+
 
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
 		b, _ := ioutil.ReadAll(resp.Body)
@@ -62,7 +61,7 @@ func (a *AfricaTalking) SendSms(to, message string) (*AfricaTalkingResponse, err
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 
-		PrintStruct(err)
+
 		return nil, errors.New("error converting from json")
 	}
 	return &response, nil

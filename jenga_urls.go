@@ -5,7 +5,7 @@ const jengaKycUrl = "customer/v2/identity/verify"
 const jengaAirTimeUrl = "transaction/v2/airtime"
 const jengaMerchantsUrl = "transaction/v2/merchants"
 const jengaBankToMobileWalletUrl = "transaction/v2/remittance#sendmobile"
-const JengaLiveUrl = "https://uat.jengahq.io/"
+const JengaLiveUrl = "https://api.jengahq.io/"
 const JengaSandboxUrl = "https://uat.jengahq.io/"
 
 func (J *Jenga) getBaseUrl() string {

@@ -262,9 +262,6 @@ func postRequest(url string, data interface{}, headers map[string]string) (*http
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}
-	log.Println("here print")
-	log.Println(req.URL.String())
-	log.Println(req.Header)
 	client := &http.Client{
 		//Timeout: 15 * time.Second
 	}
@@ -305,15 +302,14 @@ func (m *Mpesa) GetAccessToken() (*AccessTokenResponse, error) {
 		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
-	log.Println("passed here")
+
 	var token AccessTokenResponse
 
 	if err := json.NewDecoder(resp.Body).Decode(&token); err != nil {
 
 		return nil, errors.New("error converting from json")
 	}
-	log.Println(token.AccessToken)
-	log.Println("token is here")
+
 	return &token, nil
 }
 func (m *Mpesa) GetSecurityCredential(initiatorPassword string) (string, error) {

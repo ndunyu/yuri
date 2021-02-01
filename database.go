@@ -21,7 +21,7 @@ func InsertItem(item interface{}, DB *pg.DB) *ErrResponse {
 	}
 	_,err := DB.Model(&item).Insert(item)
 	if err != nil {
-		log.Println(err)
+
 		return ErrInternalServerError
 
 	}
@@ -32,13 +32,7 @@ func InsertItem(item interface{}, DB *pg.DB) *ErrResponse {
 
 //update items using id
 func UpdateItem(q *orm.Query) *ErrResponse {
-	//test presence of object
-	/*if reflect.ValueOf(item).Kind() != reflect.Ptr {
-		log.Println("not a pointer")
 
-		return ErrInvalidRequest
-
-	}*/
 	results, err := q.Returning("*").UpdateNotZero()
 	if err != nil && err == pg.ErrNoRows {
 		log.Println(err)
