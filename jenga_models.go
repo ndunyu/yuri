@@ -96,28 +96,29 @@ type BankToMobileMoneyRequest struct {
 	Transfer    Transfer               `json:"transfer"`
 }
 type Source struct {
-	CountryCode   string `json:"countryCode"`
-	Name          string `json:"name"`
-	AccountNumber string `json:"accountNumber"`
+	CountryCode   string `json:"countryCode" validate:"required"`
+	Name          string `json:"name" validate:"required"`
+	AccountNumber string `json:"accountNumber" validate:"required"`
 }
 type Destination struct {
-	Type         string `json:"type"`
-	CountryCode  string `json:"countryCode"`
-	Name         string `json:"name"`
-	MobileNumber string `json:"mobileNumber"`
+	Type         string `json:"type" validate:"required"`
+	CountryCode  string `json:"countryCode" validate:"required"`
+	Name         string `json:"name" validate:"required"`
+	MobileNumber string `json:"mobileNumber" validate:"required"`
 }
 type MobileMoneyDestination struct {
 	Destination
 	WalletName string `json:"walletName"`
 }
 type Transfer struct {
-	Type         string `json:"type"`
-	Amount       string `json:"amount"`
-	CurrencyCode string `json:"currencyCode"`
-	Reference    string `json:"reference"`
-	Date         string `json:"date"`
-	Description  string `json:"description"`
+	Type         string `json:"type" validate:"required"`
+	Amount       string `json:"amount" validate:"required"`
+	CurrencyCode string `json:"currencyCode" validate:"required"`
+	Reference    string `json:"reference" validate:"required"`
+	Date         string `json:"date" validate:"required"`
+	Description  string `json:"description" validate:"required"`
 }
+
 ////Pesalink starts here
 
 type PesaLinkRequest struct {
@@ -127,15 +128,44 @@ type PesaLinkRequest struct {
 }
 type PesaLinkDestination struct {
 	Destination
-	BankCode string `json:"bankCode"`
-	AccountNumber string `json:"accountNumber"`
+	BankCode      string `json:"bankCode" validate:"required"`
+	AccountNumber string `json:"accountNumber" validate:"required"`
 }
+
+///TODO::Use the validate package
+///TO reduce the code
+func (p *PesaLinkRequest) Validate() {
+	///err = s.Validate.Struct(p)
+	//Start of source validation
+	///if IsEmpty(p.Source.AccountNumber) {
+
+	//}
+	//if IsEmpty(p.Source.Name) {
+
+	//}
+	//if IsEmpty(p.Source.CountryCode) {
+
+	//}
+	///End of source validation
+	//if IsEmpty(p.Destination.CountryCode) {
+
+	//}
+	//if IsEmpty(p.Destination.Name) {
+
+	//}
+	//if IsEmpty(p.Destination.CountryCode) {
+
+	//}
+
+}
+
 ///Response
 type PesaLinkResponse struct {
-	TransactionId  string `json:"transaction_id"`
-	Status string `json:"status"`
-	Description  string `json:"description"`
+	TransactionId string `json:"transaction_id"`
+	Status        string `json:"status"`
+	Description   string `json:"description"`
 }
+
 ////PesaLink ends here
 
 type SendMoneyResponse struct {

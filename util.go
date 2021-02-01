@@ -18,6 +18,28 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+
+
+
+func IsEmpty(s string) bool {
+	if len(strings.TrimSpace(s)) == 0 {
+		return true
+
+	}
+	return false
+
+
+
+}
+func JengaTime(t time.Time) string {
+	layout := "2006-01-02"
+	///t := time.Now()
+	formatted := t.Format(layout)
+
+	return formatted
+
+
+}
 func MakePin(min, max, n int) string {
 	var pin []string
 	for i := 1; i <= n; i++ {
