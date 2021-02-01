@@ -33,18 +33,16 @@ func NewJenga(Username, Password, ApiKey, MerchantCode, PrivateKeyPath string, l
 
 }
 
-func (J *Jenga)GetEazzyPayMerchants(page, per_page string) (map[string]interface{}, error) {
+func (J *Jenga) GetEazzyPayMerchants(page, per_page string) (map[string]interface{}, error) {
 	queryParameters := make(map[string]string)
-	queryParameters["page"]=page
-	queryParameters["per_page"]=per_page
+	queryParameters["page"] = page
+	queryParameters["per_page"] = per_page
 	merchants := make(map[string]interface{})
-	err:=J.getAndProcessJengaRequest(J.getJengaMerchantsUrl(),&merchants,queryParameters,nil)
-	return merchants,err
-
+	err := J.getAndProcessJengaRequest(J.getJengaMerchantsUrl(), &merchants, queryParameters, nil)
+	return merchants, err
 
 }
-func (J *Jenga) SwiftTransfer(){
-
+func (J *Jenga) SwiftTransfer() {
 
 }
 
@@ -65,7 +63,17 @@ func (J *Jenga) BankToMobileMoneyTransfer(request BankToMobileMoneyRequest) (*Se
 	return &sendMoneyResponse, err
 
 }
+func (J *Jenga) PesaLinkMoneyTransfer(request PesaLinkRequest) (*PesaLinkResponse, error) {
+	var pesaLinkResponse PesaLinkResponse
+	request.Destination.Type = "bank"
+	request.Transfer.Type = "PesaLink"
+	var sigString string
 
+	sigString = joinStrings(request.Transfer.Amount, request.Transfer.CurrencyCode, request.Transfer.Reference, request.Destination.Name, request.Source.AccountNumber)
+
+	err := J.sendAndProcessJengaRequest(J.getPesaLinkToBankUrl(), sigString, request, &pesaLinkResponse, nil)
+	return &pesaLinkResponse, err
+}
 func (J *Jenga) PurchaseAirtime(airtimeRequest AirtimeRequest) (*AirtimeResponse, error) {
 
 	var airTimeResponse AirtimeResponse
@@ -127,8 +135,7 @@ func (J *Jenga) GetAccessToken() (*JengaAccessToken, error) {
 
 }
 
-
-func (J *Jenga)getAndProcessJengaRequest(url string, response interface{}, queryParameters, extraHeader map[string]string) error {
+func (J *Jenga) getAndProcessJengaRequest(url string, response interface{}, queryParameters, extraHeader map[string]string) error {
 	if reflect.ValueOf(response).Kind() != reflect.Ptr {
 		log.Println("not a pointer")
 
@@ -163,7 +170,6 @@ func (J *Jenga)getAndProcessJengaRequest(url string, response interface{}, query
 
 		return errors.New("error converting from json")
 	}
-
 
 	return nil
 }
@@ -202,13 +208,11 @@ func (J *Jenga) sendAndProcessJengaRequest(url, sigString string, data interface
 	defer resp.Body.Close()
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
 
-
 		b, _ := ioutil.ReadAll(resp.Body)
 
 		return &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
-
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 

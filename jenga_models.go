@@ -82,9 +82,8 @@ type AirtimeResponse struct {
 	ReferenceNumber string `json:"referenceNumber"`
 	Status          string `json:"status"`
 	ResponseStatus  string `json:"response_status"`
-	ResponseMsg string `json:"response_msg"`
-	ResponseCode string `json:"response_code"`
-
+	ResponseMsg     string `json:"response_msg"`
+	ResponseCode    string `json:"response_code"`
 }
 
 ////end of aitime purcahse
@@ -92,9 +91,9 @@ type AirtimeResponse struct {
 ///money transfer from bank account to mobile money
 
 type BankToMobileMoneyRequest struct {
-	Source      Source      `json:"source"`
-	Destination Destination `json:"destination"`
-	Transfer    Transfer    `json:"transfer"`
+	Source      Source                 `json:"source"`
+	Destination MobileMoneyDestination `json:"destination"`
+	Transfer    Transfer               `json:"transfer"`
 }
 type Source struct {
 	CountryCode   string `json:"countryCode"`
@@ -106,7 +105,10 @@ type Destination struct {
 	CountryCode  string `json:"countryCode"`
 	Name         string `json:"name"`
 	MobileNumber string `json:"mobileNumber"`
-	WalletName   string `json:"walletName"`
+}
+type MobileMoneyDestination struct {
+	Destination
+	WalletName string `json:"walletName"`
 }
 type Transfer struct {
 	Type         string `json:"type"`
@@ -116,16 +118,30 @@ type Transfer struct {
 	Date         string `json:"date"`
 	Description  string `json:"description"`
 }
+////Pesalink starts here
 
-
-////
-
+type PesaLinkRequest struct {
+	Source      Source              `json:"source"`
+	Transfer    Transfer            `json:"transfer"`
+	Destination PesaLinkDestination `json:"destination"`
+}
+type PesaLinkDestination struct {
+	Destination
+	BankCode string `json:"bankCode"`
+	AccountNumber string `json:"accountNumber"`
+}
+///Response
+type PesaLinkResponse struct {
+	TransactionId  string `json:"transaction_id"`
+	Status string `json:"status"`
+	Description  string `json:"description"`
+}
+////PesaLink ends here
 
 type SendMoneyResponse struct {
-	TransactionID string `json:"transactionId"`
-	Status        string `json:"status"`
-	ResponseStatus  string `json:"response_status"`
-	ResponseMsg string `json:"response_msg"`
-	ResponseCode string `json:"response_code"`
-
+	TransactionID  string `json:"transactionId"`
+	Status         string `json:"status"`
+	ResponseStatus string `json:"response_status"`
+	ResponseMsg    string `json:"response_msg"`
+	ResponseCode   string `json:"response_code"`
 }
