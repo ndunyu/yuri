@@ -1,11 +1,14 @@
 package yuri
 
+import "fmt"
+
 const jengaTokenUrl = "identity/v2/token"
 const jengaKycUrl = "customer/v2/identity/verify"
 const jengaAirTimeUrl = "transaction/v2/airtime"
 const jengaMerchantsUrl = "transaction/v2/merchants"
 const jengaBankToMobileWalletUrl = "transaction/v2/remittance#sendmobile"
-const pesaLinkToBankUrl = "transaction/v2/remittance'"
+const pesaLinkToBankUrl = "transaction/v2/remittance"
+const accountBalance = "account/v2/accounts/balances/%s/%s"
 
 const JengaLiveUrl = "https://api.jengahq.io/"
 const JengaSandboxUrl = "https://uat.jengahq.io/"
@@ -17,6 +20,11 @@ func (J *Jenga) getBaseUrl() string {
 	}
 
 	return JengaLiveUrl
+
+}
+func (J *Jenga)getAccountBalanceUrl(countryCode, accountId string) string {
+	url:=fmt.Sprintf(accountBalance,countryCode,accountId)
+	return J.getBaseUrl() + url
 
 }
 

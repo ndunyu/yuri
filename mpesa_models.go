@@ -205,7 +205,7 @@ type C2BValidatedResponse struct {
 	// use 0 for success
 	// and any other value for error
 	// this is required
-	ResultCode string
+	ResultCode int
 	// this is optional
 	// value can be  “Service processing successful”
 	ResultDesc string

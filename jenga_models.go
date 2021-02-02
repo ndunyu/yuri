@@ -101,7 +101,7 @@ type Source struct {
 	AccountNumber string `json:"accountNumber" validate:"required"`
 }
 type Destination struct {
-	Type         string `json:"type" validate:"required"`
+	Type         string `json:"type" `
 	CountryCode  string `json:"countryCode" validate:"required"`
 	Name         string `json:"name" validate:"required"`
 	MobileNumber string `json:"mobileNumber" validate:"required"`

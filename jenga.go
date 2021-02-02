@@ -33,17 +33,23 @@ func NewJenga(Username, Password, ApiKey, MerchantCode, PrivateKeyPath string, l
 
 }
 
+///https://sandbox.jengahq.io/account-test/v2/accounts/balances/countryCode/accountId
+
 func (J *Jenga) GetEazzyPayMerchants(page, per_page string) (map[string]interface{}, error) {
 	queryParameters := make(map[string]string)
 	queryParameters["page"] = page
 	queryParameters["per_page"] = per_page
 	merchants := make(map[string]interface{})
-	err := J.getAndProcessJengaRequest(J.getJengaMerchantsUrl(), &merchants, queryParameters, nil)
+	err := J.getAndProcessJengaRequest(J.getJengaMerchantsUrl(), "", &merchants, queryParameters, nil)
+
 	return merchants, err
 
 }
-func (J *Jenga) SwiftTransfer() {
-
+func (J *Jenga) GetAccountBalance(countryCode, accountId string) (map[string]interface{}, error) {
+	merchants := make(map[string]interface{})
+	sigString := joinStrings(countryCode, accountId)
+	err := J.getAndProcessJengaRequest(J.getAccountBalanceUrl(countryCode, accountId), sigString, &merchants, nil, nil)
+	return merchants, err
 }
 
 func (J *Jenga) BankToMobileMoneyTransfer(request BankToMobileMoneyRequest) (*SendMoneyResponse, error) {
@@ -63,21 +69,23 @@ func (J *Jenga) BankToMobileMoneyTransfer(request BankToMobileMoneyRequest) (*Se
 	return &sendMoneyResponse, err
 
 }
-func (J *Jenga) PesaLinkMoneyTransfer(request PesaLinkRequest) (*PesaLinkResponse, error) {
-	var pesaLinkResponse PesaLinkResponse
+func (J *Jenga) PesaLinkMoneyTransfer(request PesaLinkRequest) (*map[string]interface{}, error) {
+	///var pesaLinkResponse PesaLinkResponse
+	var m map[string]interface{}
 	request.Destination.Type = "bank"
 	request.Transfer.Type = "PesaLink"
 	var sigString string
 
-	sigString = joinStrings(request.Transfer.Amount, request.Transfer.CurrencyCode, request.Transfer.Reference, request.Destination.Name, request.Source.AccountNumber)
+	sigString = joinStrings( request.Transfer.CurrencyCode, request.Transfer.Reference, request.Destination.Name, request.Source.AccountNumber)
 
-	err := J.sendAndProcessJengaRequest(J.getPesaLinkToBankUrl(), sigString, request, &pesaLinkResponse, nil)
-	return &pesaLinkResponse, err
+	err := J.sendAndProcessJengaRequest(J.getPesaLinkToBankUrl(), sigString, request, &m, nil)
+	return &m, err
 }
 func (J *Jenga) PurchaseAirtime(airtimeRequest AirtimeRequest) (*AirtimeResponse, error) {
 
 	var airTimeResponse AirtimeResponse
 	sigString := joinStrings(J.MerchantCode, airtimeRequest.Airtime.Telco, airtimeRequest.Airtime.Amount, airtimeRequest.Airtime.Reference) /// J.MerchantCode + airtimeRequest.Airtime.Telco + airtimeRequest.Airtime.Amount + airtimeRequest.Airtime.Reference
+
 	err := J.sendAndProcessJengaRequest(J.getAirTimeUrl(), sigString, airtimeRequest, &airTimeResponse, nil)
 	return &airTimeResponse, err
 
@@ -135,7 +143,7 @@ func (J *Jenga) GetAccessToken() (*JengaAccessToken, error) {
 
 }
 
-func (J *Jenga) getAndProcessJengaRequest(url string, response interface{}, queryParameters, extraHeader map[string]string) error {
+func (J *Jenga) getAndProcessJengaRequest(url, sigString string, response interface{}, queryParameters, extraHeader map[string]string) error {
 	if reflect.ValueOf(response).Kind() != reflect.Ptr {
 		log.Println("not a pointer")
 
@@ -144,9 +152,23 @@ func (J *Jenga) getAndProcessJengaRequest(url string, response interface{}, quer
 	}
 	token, err := J.GetAccessToken()
 	if err != nil {
+		log.Println("token.AccessToken")
 		return err
 	}
+	log.Println("lalalal")
+	PrintStruct(token.AccessToken)
 	headers := make(map[string]string)
+	if !IsEmpty(sigString) {
+
+		signature, err := SignSha256DataWithPrivateKey(sigString, J.PrivateKeyPath)
+		if err != nil {
+
+			return err
+		}
+		headers["signature"] = signature
+
+	}
+
 	headers["Content-Type"] = "application/json"
 	headers["Authorization"] = "Bearer " + token.AccessToken
 	for k, v := range extraHeader {
@@ -159,11 +181,13 @@ func (J *Jenga) getAndProcessJengaRequest(url string, response interface{}, quer
 	}
 	defer resp.Body.Close()
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
+		log.Println(resp.StatusCode)
 		b, _ := ioutil.ReadAll(resp.Body)
 
 		return &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
+	log.Println(token.AccessToken)
 	///var dt map[string]interface{}
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
@@ -187,12 +211,15 @@ func (J *Jenga) sendAndProcessJengaRequest(url, sigString string, data interface
 	if err != nil {
 		return err
 	}
-	signature, err := SignSha256DataWithPrivateKey(sigString, J.PrivateKeyPath)
+	s := strings.TrimSpace(sigString)
+	signature, err := SignSha256DataWithPrivateKey(s, J.PrivateKeyPath)
 	if err != nil {
 
 		return err
 	}
 	headers := make(map[string]string)
+	log.Println(s)
+	log.Println(signature)
 	headers["signature"] = signature
 	headers["Content-Type"] = "application/json"
 	headers["Authorization"] = "Bearer " + token.AccessToken
@@ -213,6 +240,7 @@ func (J *Jenga) sendAndProcessJengaRequest(url, sigString string, data interface
 		return &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
+	log.Println(resp.StatusCode)
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 
