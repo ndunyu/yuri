@@ -8,7 +8,12 @@ import (
 ///Will queue jobs to be executed later
 
 ///send to be enqueued
-type Process func(interface{})
+type Processv1 func(interface{})
+type Process interface {
+	Process(interface{})
+}
+
+
 
 type Queue struct {
 	///Number of workers(consumers)goroutines to open
@@ -90,7 +95,7 @@ func (q *Queue) worker() {
 
 		case job := <-q.JobQueue:
 			log.Println("i am processing a job")
-			q.JobCallBack(job)
+			q.JobCallBack.Process(job)
 		}
 	}
 }
