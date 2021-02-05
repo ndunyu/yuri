@@ -164,6 +164,10 @@ type PesaLinkResponse struct {
 	TransactionId string `json:"transaction_id"`
 	Status        string `json:"status"`
 	Description   string `json:"description"`
+	ResponseCode string `json:"response_code"`
+	ResponseMsg string `json:"response_msg"`
+	ResponseStatus string `json:"response_status"`
+
 }
 
 ////PesaLink ends here

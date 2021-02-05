@@ -230,13 +230,13 @@ func getRequest(url string, headers map[string]string, queryParameters map[strin
 		req.URL.RawQuery = q.Encode()
 
 	}
-	fmt.Println(req.URL.String())
+
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}
+	fmt.Println(req.URL.String())
 
-	req.Header.Add("Accept", "application/json")
-	req.Header.Set("Accept", "application/json")
+
 	client := &http.Client{
 		//Timeout: 20 * time.Second
 
@@ -261,6 +261,7 @@ func postRequest(url string, data interface{}, headers map[string]string) (*http
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}
+
 	client := &http.Client{
 		//Timeout: 15 * time.Second
 	}
@@ -317,7 +318,7 @@ func (m *Mpesa) GetSecurityCredential(initiatorPassword string) (string, error) 
 		fileName = "https://developer.safaricom.co.ke/sites/default/files/cert/cert_prod/cert.cer"
 	} else {
 		fileName = "https://developer.safaricom.co.ke/sites/default/files/cert/cert_sandbox/cert.cer"
-		log.Println("herre")
+
 
 	}
 	resp, err := getRequest(fileName, nil, nil)
