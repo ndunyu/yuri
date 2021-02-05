@@ -70,9 +70,9 @@ func (J *Jenga) BankToMobileMoneyTransfer(request BankToMobileMoneyRequest) (*Se
 	return &sendMoneyResponse, err
 
 }
-func (J *Jenga) PesaLinkMoneyTransfer(request PesaLinkRequest) (*map[string]interface{}, error) {
-	///var pesaLinkResponse PesaLinkResponse
-	var m map[string]interface{}
+func (J *Jenga) PesaLinkMoneyTransfer(request PesaLinkRequest) (*PesaLinkResponse, error) {
+	var pesaLinkResponse PesaLinkResponse
+	///var m map[string]interface{}
 	request.Destination.Type = "bank"
 	request.Transfer.Type = "PesaLink"
 	var sigString string
@@ -80,8 +80,8 @@ func (J *Jenga) PesaLinkMoneyTransfer(request PesaLinkRequest) (*map[string]inte
 	sigString = joinStrings( request.Transfer.Amount,request.Transfer.CurrencyCode, request.Transfer.Reference, request.Destination.Name, request.Source.AccountNumber)
      log.Println(sigString)
 	log.Println("Item are pelob here")
-	err := J.sendAndProcessJengaRequest(J.getPesaLinkToBankUrl(), sigString, request, &m, nil)
-	return &m, err
+	err := J.sendAndProcessJengaRequest(J.getPesaLinkToBankUrl(), sigString, request, &pesaLinkResponse, nil)
+	return &pesaLinkResponse, err
 }
 func (J *Jenga) PurchaseAirtime(airtimeRequest AirtimeRequest) (*AirtimeResponse, error) {
 
