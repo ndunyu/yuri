@@ -161,7 +161,7 @@ func (p *PesaLinkRequest) Validate() {
 
 ///Response
 type PesaLinkResponse struct {
-	TransactionId string `json:"transaction_id"`
+	TransactionId string `json:"transactionId"`
 	Status        string `json:"status"`
 	Description   string `json:"description"`
 	ResponseCode string `json:"response_code"`
