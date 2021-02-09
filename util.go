@@ -221,6 +221,17 @@ func FormatNumberToInternationalFormat(phoneNumber, region string) (string, erro
 	return formatted,nil
 }
 
+func FormatNumberToNationalFormat(phoneNumber, region string) (string, error) {
+	num, err := libphonenumber.Parse(phoneNumber, region)
+	if err != nil {
+		return "", err
+
+	}
+	formatted := libphonenumber.Format (num, libphonenumber.NATIONAL)
+	trimmed := strings.Replace(formatted, " ", "", -1)
+	return trimmed,nil
+}
+
 func CreateGid() string {
 
 	u2 := uuid.NewV4()
