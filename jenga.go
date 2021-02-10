@@ -83,6 +83,17 @@ func (J *Jenga) PesaLinkMoneyTransfer(request PesaLinkRequest) (*PesaLinkRespons
 	err := J.sendAndProcessJengaRequest(J.getPesaLinkToBankUrl(), sigString, request, &pesaLinkResponse, nil)
 	return &pesaLinkResponse, err
 }
+func (J *Jenga) EquityToEquityMoneyTransfer(request PesaLinkRequest) (*PesaLinkResponse, error) {
+	request.Destination.Type = "bank"
+	var pesaLinkResponse PesaLinkResponse
+	request.Transfer.Type="InternalFundsTransfer"
+	sigString := joinStrings( request.Source.AccountNumber,request.Transfer.Amount, request.Transfer.CurrencyCode, request.Transfer.Reference)
+	err := J.sendAndProcessJengaRequest(J.getEquityToEquityUrl(), sigString, request, &pesaLinkResponse, nil)
+	return &pesaLinkResponse, err
+
+}
+
+
 func (J *Jenga) PurchaseAirtime(airtimeRequest AirtimeRequest) (*AirtimeResponse, error) {
 
 	var airTimeResponse AirtimeResponse

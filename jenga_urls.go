@@ -8,6 +8,7 @@ const jengaAirTimeUrl = "transaction/v2/airtime"
 const jengaMerchantsUrl = "transaction/v2/merchants"
 const jengaBankToMobileWalletUrl = "transaction/v2/remittance#sendmobile"
 const pesaLinkToBankUrl = "transaction/v2/remittance"
+const equityToequity = "transaction/v2/remittance#sendeqtybank"
 const accountBalance = "account/v2/accounts/balances/%s/%s"
 
 const JengaLiveUrl = "https://api.jengahq.io/"
@@ -38,6 +39,12 @@ func (J *Jenga) getBankToMobileWalletUrl() string {
 func (J *Jenga) getPesaLinkToBankUrl() string {
 
 	return J.getBaseUrl() + pesaLinkToBankUrl
+}
+
+func (J *Jenga) getEquityToEquityUrl()string {
+
+	return J.getBaseUrl() + equityToequity
+
 }
 
 func (J *Jenga) getAirTimeUrl() string {
