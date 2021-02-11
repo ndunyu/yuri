@@ -99,6 +99,29 @@ func GetItemsHandler(item interface{}, q *orm.Query, p *Pagination) (*ResponseDa
 	return &response, nil
 }
 
+
+///func get many items
+func GetMultipleItems(item interface{}, q *orm.Query, p *Pagination) (*ResponseData, error) {
+	if p != nil {
+		q.Limit(p.Size)
+		q.Offset(p.Offset)
+	}
+
+	count, err := q.SelectAndCount()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+
+	}
+
+	response := ResponseData{Items: item, TotalItems: count}
+
+	return &response, nil
+}
+
+
+
+
 ///get a single item and its relations if any
 func GetItemHandler(q *orm.Query) *ErrResponse {
 
