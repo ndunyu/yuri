@@ -195,7 +195,6 @@ func (p *Pagination) GetPagination(r *http.Request) {
 		p.Max = 40
 
 	}
-
 	if p.Size > p.Max {
 		p.Size = p.Max
 	}
