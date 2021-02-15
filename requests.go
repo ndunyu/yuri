@@ -22,6 +22,7 @@ type Pagination struct {
 	Page   int
 	Size   int
 	Offset int
+	Max    int
 }
 
 type Filters struct {
@@ -189,6 +190,14 @@ func (p *Pagination) GetPagination(r *http.Request) {
 		p.Size, _ = strconv.Atoi(r.URL.Query().Get("size"))
 		///p.Size = size
 
+	}
+	if p.Max == 0 {
+		p.Max = 40
+
+	}
+
+	if p.Size > p.Max {
+		p.Size = p.Max
 	}
 	if p.Page > 0 {
 		p.Offset = (p.Page - 1) * p.Size
