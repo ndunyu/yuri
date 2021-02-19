@@ -217,9 +217,9 @@ func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{},respIt
 
 
 func getRequest(url string, headers map[string]string, queryParameters map[string]string) (*http.Response, error) {
-	///requestBody, err := json.Marshal(data)
 
-	PrintStruct(headers)
+
+
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -234,7 +234,7 @@ func getRequest(url string, headers map[string]string, queryParameters map[strin
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}
-	fmt.Println(req.URL.String())
+
 
 
 	client := &http.Client{

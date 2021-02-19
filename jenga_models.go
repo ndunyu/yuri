@@ -1,5 +1,23 @@
 package yuri
 
+
+
+
+
+
+
+///Jenga Balance
+type JengaBalance struct {
+	Currency string     `json:"currency"`
+	Balances []Balances `json:"balances"`
+}
+type Balances struct {
+	Amount string `json:"amount"`
+	Type   string `json:"type"`
+}
+
+
+
 type JengaAccessToken struct {
 	TokenType   string `json:"token_type"`
 	IssuedAt    string `json:"issued_at"`
