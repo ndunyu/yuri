@@ -12,7 +12,7 @@ type JengaBalance struct {
 	Balances []Balances `json:"balances"`
 }
 type Balances struct {
-	Amount string `json:"amount"`
+	Amount   float64 `json:"amount,string"`
 	Type   string `json:"type"`
 }
 
