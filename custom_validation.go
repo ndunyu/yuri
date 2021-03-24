@@ -10,10 +10,6 @@ func PhoneNumberValidation(fl validator.FieldLevel) bool {
 	return checkKenyaInternationalPhoneNumber(fl.Field().String())
 }
 
-
-
-
-
 func TranslateErrors(trans ut.Translator, err error) []Field {
 
 	errs := err.(validator.ValidationErrors)

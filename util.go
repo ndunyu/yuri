@@ -241,4 +241,11 @@ func CreateGid() string {
 
 }
 
-//07
+func ContainsInt(items []int, item int) bool {
+	for _, number := range items {
+		if number == item {
+			return true
+		}
+	}
+	return false
+}
