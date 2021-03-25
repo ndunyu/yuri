@@ -5,6 +5,8 @@ package yuri
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/go-pg/pg/v10"
 )
 
 type ResponseData struct {
@@ -23,6 +25,29 @@ func JsonResponder(w http.ResponseWriter, r *http.Request, item interface{}, err
 	w.Header().Set("Content-Type", "application/json")
 
 	json.NewEncoder(w).Encode(item)
+
+}
+
+func Error404Or500(err error, w http.ResponseWriter, r *http.Request, text string) {
+	if err != nil && err == pg.ErrNoRows {
+		if text != "" {
+			JsonResponder(w, r, nil, &ErrResponse{
+				HTTPStatusCode: 404,
+				Message:        text,
+				StatusText:     text,
+			})
+			return
+
+		}
+		JsonResponder(w, r, nil, ErrNotFound)
+		return
+	}
+	if err != nil {
+		JsonResponder(w, r, nil, ErrInternalServerError)
+
+		return
+
+	}
 
 }
 
