@@ -1,9 +1,11 @@
 package yuri
 
 import (
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"regexp"
@@ -18,6 +20,60 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
 )
+
+///User may send data to a struct property
+///as a string int or float,this will convert them to a string
+///and save them to the database as a string (Var char)
+//It will also make sure json does not complain
+///that number int or float is not of type  string
+type IntStringOrFloatColumn struct {
+	sql.NullString
+}
+func (ni *IntStringOrFloatColumn) MarshalJSON() ([]byte, error) {
+
+	if !ni.Valid {
+		return json.Marshal(ni.String)
+	}
+	return json.Marshal(ni.String)
+}
+
+func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
+	var item interface{}
+	if err := json.Unmarshal(b, &item); err != nil {
+		ni.Valid = false
+		return err
+	}
+	switch v := item.(type) {
+	case int:
+		log.Println("type of is int",v)
+		ni.String = IntToString(v)
+
+		// v is an int here, so e.g. v + 1 is possible.
+
+	case float64:
+		ni.String = fmt.Sprintf("%.0f",v )
+
+
+	case string:
+		log.Println("type of is string",v)
+		ni.String = v
+
+	default:
+		fmt.Printf("%T\n", item)
+		log.Println("unknwn type  of is int",v)
+		// And here I'm feeling dumb. ;)
+	}
+	///err := json.Unmarshal(b, &ni.String)
+	///ni.Valid = err == nil
+	ni.Valid=true
+	return nil
+}
+
+
+
+
+
+
 
 func IsEmpty(s string) bool {
 	if len(strings.TrimSpace(s)) == 0 {
