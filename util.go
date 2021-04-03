@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/ttacon/libphonenumber"
 	"math/rand"
 	"net/http"
 	"regexp"
@@ -12,14 +11,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ttacon/libphonenumber"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/chi"
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
 )
-
-
-
 
 func IsEmpty(s string) bool {
 	if len(strings.TrimSpace(s)) == 0 {
@@ -28,11 +26,13 @@ func IsEmpty(s string) bool {
 	}
 	return false
 
-
-
 }
 func IntToString(item int) string {
 	return strconv.Itoa(item)
+
+}
+func EqualIgnoreCase(a, b string) bool {
+	return strings.EqualFold(a, b)
 
 }
 
@@ -42,7 +42,6 @@ func JengaTime(t time.Time) string {
 	formatted := t.Format(layout)
 
 	return formatted
-
 
 }
 func MakePin(min, max, n int) string {
@@ -59,13 +58,10 @@ func MakePin(min, max, n int) string {
 
 func MakeIntPin(min, max, n int) int {
 
-	data,_:=strconv.Atoi(MakePin(min,max,n))
+	data, _ := strconv.Atoi(MakePin(min, max, n))
 	return data
 
 }
-
-
-
 
 func CheckTokenId(r *http.Request, JwtSecretKey []byte) (int, error) {
 
@@ -79,7 +75,6 @@ func CheckTokenId(r *http.Request, JwtSecretKey []byte) (int, error) {
 	splitToken := strings.Split(authHeader, "Bearer")
 	authHeader = splitToken[1]
 	sentToken := strings.TrimSpace(authHeader)
-
 
 	if sentToken == "" {
 
@@ -172,17 +167,14 @@ func HashPassword(password string) (string, error) {
 
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	if err!=nil {
+	if err != nil {
 		return false
 	}
 	return true
 }
 
-
-func PrintStruct(data interface{}){
+func PrintStruct(data interface{}) {
 	fmt.Printf("%+v\n", data)
-
-
 
 }
 func MakeTimestamp() int64 {
@@ -190,7 +182,6 @@ func MakeTimestamp() int64 {
 	tUnixMilli := int64(time.Nanosecond) * t.UnixNano() / int64(time.Millisecond)
 	return tUnixMilli
 }
-
 
 func ToString(data interface{}) (string, error) {
 	b, err := json.Marshal(data)
@@ -200,13 +191,12 @@ func ToString(data interface{}) (string, error) {
 	return string(b), nil
 }
 
-
 func ToJson(data interface{}) ([]byte, error) {
 	b, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
 	}
-	return b,nil
+	return b, nil
 }
 
 ///TODO::make sure numbers dont pass 9
@@ -215,7 +205,6 @@ func checkKenyaInternationalPhoneNumber(phone string) bool {
 	return re.MatchString(phone)
 }
 
-
 func FormatNumberToInternationalFormat(phoneNumber, region string) (string, error) {
 	num, err := libphonenumber.Parse(phoneNumber, region)
 	if err != nil {
@@ -223,7 +212,7 @@ func FormatNumberToInternationalFormat(phoneNumber, region string) (string, erro
 
 	}
 	formatted := libphonenumber.Format(num, libphonenumber.E164)
-	return formatted,nil
+	return formatted, nil
 }
 
 func FormatNumberToNationalFormat(phoneNumber, region string) (string, error) {
@@ -232,9 +221,9 @@ func FormatNumberToNationalFormat(phoneNumber, region string) (string, error) {
 		return "", err
 
 	}
-	formatted := libphonenumber.Format (num, libphonenumber.NATIONAL)
+	formatted := libphonenumber.Format(num, libphonenumber.NATIONAL)
 	trimmed := strings.Replace(formatted, " ", "", -1)
-	return trimmed,nil
+	return trimmed, nil
 }
 
 func CreateGid() string {
@@ -242,7 +231,6 @@ func CreateGid() string {
 	u2 := uuid.NewV4()
 
 	return u2.String()
-
 
 }
 
