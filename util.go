@@ -31,6 +31,11 @@ func IsEmpty(s string) bool {
 
 
 }
+func IntToString(item int) string {
+	return strconv.Itoa(item)
+
+}
+
 func JengaTime(t time.Time) string {
 	layout := "2006-01-02"
 	///t := time.Now()
