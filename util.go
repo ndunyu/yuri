@@ -29,6 +29,7 @@ import (
 type IntStringOrFloatColumn struct {
 	sql.NullString
 }
+
 func (ni *IntStringOrFloatColumn) MarshalJSON() ([]byte, error) {
 
 	if !ni.Valid {
@@ -45,35 +46,38 @@ func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 	}
 	switch v := item.(type) {
 	case int:
-		log.Println("type of is int",v)
+		log.Println("type of is int", v)
 		ni.String = IntToString(v)
 
 		// v is an int here, so e.g. v + 1 is possible.
 
 	case float64:
-		ni.String = fmt.Sprintf("%.0f",v )
-
+		ni.String = fmt.Sprintf("%.0f", v)
 
 	case string:
-		log.Println("type of is string",v)
+		log.Println("type of is string", v)
 		ni.String = v
 
 	default:
 		fmt.Printf("%T\n", item)
-		log.Println("unknwn type  of is int",v)
+		log.Println("unknwn type  of is int", v)
 		// And here I'm feeling dumb. ;)
 	}
 	///err := json.Unmarshal(b, &ni.String)
 	///ni.Valid = err == nil
-	ni.Valid=true
+	ni.Valid = true
 	return nil
 }
 
+//check if a string can be converted into an integer
+func StringIsInt(s string) (*int, bool) {
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		return nil, false
+	}
+	return &i, true
 
-
-
-
-
+}
 
 func IsEmpty(s string) bool {
 	if len(strings.TrimSpace(s)) == 0 {
@@ -87,6 +91,7 @@ func IntToString(item int) string {
 	return strconv.Itoa(item)
 
 }
+
 func EqualIgnoreCase(a, b string) bool {
 	return strings.EqualFold(a, b)
 
