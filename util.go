@@ -68,7 +68,6 @@ func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 	ni.Valid = true
 	return nil
 }
-
 //check if a string can be converted into an integer
 func StringIsInt(s string) (*int, bool) {
 	i, err := strconv.Atoi(s)
@@ -76,9 +75,7 @@ func StringIsInt(s string) (*int, bool) {
 		return nil, false
 	}
 	return &i, true
-
 }
-
 func IsEmpty(s string) bool {
 	if len(strings.TrimSpace(s)) == 0 {
 		return true
@@ -298,6 +295,15 @@ func CreateGid() string {
 func ContainsInt(items []int, item int) bool {
 	for _, number := range items {
 		if number == item {
+			return true
+		}
+	}
+	return false
+}
+
+func ContainsString(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
 			return true
 		}
 	}
