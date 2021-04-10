@@ -196,11 +196,9 @@ func (p *Pagination) GetPagination(r *http.Request) {
 
 
 }
-
 func (p *Pagination) ProcessPagination(){
 	if p.Max == 0 {
 		p.Max = 40
-
 	}
 	if p.Size > p.Max {
 		p.Size = p.Max
@@ -214,7 +212,6 @@ func (p *Pagination) ProcessPagination(){
 }
 
 func GetQueryParameter(key string, r *http.Request) string {
-
 	return r.URL.Query().Get(key)
 
 }

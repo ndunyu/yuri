@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/go-pg/pg/v10"
+	"github.com/vmihailenco/msgpack/v5"
 )
 
 type ResponseData struct {
@@ -14,7 +15,16 @@ type ResponseData struct {
 	TotalItems int         `json:"total_items"`
 	//Pages      int `json:"pages"`
 }
+func MessagePackJsonResponder(w http.ResponseWriter, r *http.Request, item interface{}, err *ErrResponse) {
+	if err != nil {
 
+		http.Error(w, err.StatusText, err.HTTPStatusCode)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	msgpack.NewEncoder(w).Encode(item)
+
+}
 func JsonResponder(w http.ResponseWriter, r *http.Request, item interface{}, err *ErrResponse) {
 	if err != nil {
 
