@@ -38,6 +38,11 @@ func (ni *IntStringOrFloatColumn) MarshalJSON() ([]byte, error) {
 	return json.Marshal(ni.String)
 }
 
+func ExecutionTime(start time.Time, name string) {
+	elapsed := time.Since(start)
+	log.Printf("%s took %s", name, elapsed)
+}
+
 func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 	var item interface{}
 	if err := json.Unmarshal(b, &item); err != nil {
