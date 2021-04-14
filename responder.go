@@ -30,8 +30,9 @@ func JsonGzipBytesResponder(w http.ResponseWriter, r *http.Request, b []byte, er
 	w.Header().Set("Content-Encoding", "gzip")
 	gz := gzip.NewWriter(w)
 	defer gz.Close()
-	gzr := gzipResponseWriter{Writer: gz, ResponseWriter: w}
-	gzr.Write(b)
+	gz.Write(b)
+	///gzr := gzipResponseWriter{Writer: gz, ResponseWriter: w}
+	///gzr.Write(b)
 }
 
 func JsonGzipResponder(w http.ResponseWriter, r *http.Request, item interface{}, err *ErrResponse) {
