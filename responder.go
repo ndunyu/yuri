@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/go-pg/pg/v10"
 )
@@ -25,6 +26,8 @@ func (w gzipResponseWriter) Write(b []byte) (int, error) {
 	return w.Writer.Write(b)
 }
 func JsonGzipBytesResponder(w http.ResponseWriter, r *http.Request, b []byte, err *ErrResponse) {
+	t:=time.Now();
+	defer  ExecutionTime(t,"gzip for bytes took about")
 	w.Header().Add("Accept-Charset", "utf-8")
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Content-Encoding", "gzip")
