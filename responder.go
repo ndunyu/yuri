@@ -22,12 +22,12 @@ type gzipResponseWriter struct {
 	io.Writer
 	http.ResponseWriter
 }
+
 func (w gzipResponseWriter) Write(b []byte) (int, error) {
 	return w.Writer.Write(b)
 }
 func JsonGzipBytesResponder(w http.ResponseWriter, r *http.Request, b []byte, err *ErrResponse) {
-	t:=time.Now();
-	defer  ExecutionTime(t,"gzip for ytes took about")
+
 	w.Header().Add("Accept-Charset", "utf-8")
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Content-Encoding", "gzip")
@@ -35,7 +35,10 @@ func JsonGzipBytesResponder(w http.ResponseWriter, r *http.Request, b []byte, er
 	defer gz.Close()
 
 	gzr := gzipResponseWriter{Writer: gz, ResponseWriter: w}
+	t := time.Now()
+
 	gzr.Write(b)
+	ExecutionTime(t, "gzip for ytes took about")
 }
 
 func JsonGzipResponder(w http.ResponseWriter, r *http.Request, item interface{}, err *ErrResponse) {
@@ -53,8 +56,6 @@ func JsonGzipResponder(w http.ResponseWriter, r *http.Request, item interface{},
 	json.NewEncoder(gz).Encode(item)
 	gz.Close()
 }
-
-
 
 func JsonResponder(w http.ResponseWriter, r *http.Request, item interface{}, err *ErrResponse) {
 	if err != nil {
