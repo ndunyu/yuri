@@ -3,6 +3,7 @@
 package yuri
 
 import (
+	"compress/gzip"
 	"encoding/json"
 	"net/http"
 
@@ -14,6 +15,25 @@ type ResponseData struct {
 	TotalItems int         `json:"total_items"`
 	//Pages      int `json:"pages"`
 }
+
+
+func JsonGzipResponder(w http.ResponseWriter, r *http.Request, item interface{}, err *ErrResponse) {
+	// create header
+	if err != nil {
+
+		http.Error(w, err.StatusText, err.HTTPStatusCode)
+		return
+	}
+	w.Header().Add("Accept-Charset", "utf-8")
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Content-Encoding", "gzip")
+	// Gzip data
+	gz := gzip.NewWriter(w)
+	json.NewEncoder(gz).Encode(item)
+	gz.Close()
+}
+
+
 
 func JsonResponder(w http.ResponseWriter, r *http.Request, item interface{}, err *ErrResponse) {
 	if err != nil {
