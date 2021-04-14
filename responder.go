@@ -27,15 +27,15 @@ func (w gzipResponseWriter) Write(b []byte) (int, error) {
 }
 func JsonGzipBytesResponder(w http.ResponseWriter, r *http.Request, b []byte, err *ErrResponse) {
 	t:=time.Now();
-	defer  ExecutionTime(t,"gzip for bytes took about")
+	defer  ExecutionTime(t,"gzip for ytes took about")
 	w.Header().Add("Accept-Charset", "utf-8")
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Content-Encoding", "gzip")
 	gz := gzip.NewWriter(w)
 	defer gz.Close()
-	gz.Write(b)
-	///gzr := gzipResponseWriter{Writer: gz, ResponseWriter: w}
-	///gzr.Write(b)
+
+	gzr := gzipResponseWriter{Writer: gz, ResponseWriter: w}
+	gzr.Write(b)
 }
 
 func JsonGzipResponder(w http.ResponseWriter, r *http.Request, item interface{}, err *ErrResponse) {
