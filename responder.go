@@ -44,8 +44,14 @@ func JsonGzipBytesResponder(w http.ResponseWriter, r *http.Request, b []byte, er
 	t := time.Now()
 	gzr.Write(b)
 	ExecutionTime(t, "gzip for ytes took about")
+
 }
 
+// JsonGzipResponder /  JsonGzipResponder Gzip the response
+/// "Deprecated:use nginx to Gzip the data"
+/// The you use this method their is an overhead creating the buffer hence instead
+/// of processing 60k request/s your api will process about 4k request/second
+/// thus its better to use nginx to gzip
 func JsonGzipResponder(w http.ResponseWriter, r *http.Request, item interface{}, err *ErrResponse) {
 	// create header
 	if err != nil {
