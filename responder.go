@@ -26,6 +26,12 @@ type gzipResponseWriter struct {
 func (w gzipResponseWriter) Write(b []byte) (int, error) {
 	return w.Writer.Write(b)
 }
+
+// JsonGzipBytesResponder /  JsonGzipBytesResponder Gzip the response
+/// "Deprecated:use nginx to Gzip the data"
+/// The you use this method their is an overhead creating the buffer hence instead
+/// of processing 60k request/s your api will process about 4k request/second
+/// thus its better to use nginx to gzip
 func JsonGzipBytesResponder(w http.ResponseWriter, r *http.Request, b []byte, err *ErrResponse) {
 
 	w.Header().Add("Accept-Charset", "utf-8")
@@ -36,7 +42,6 @@ func JsonGzipBytesResponder(w http.ResponseWriter, r *http.Request, b []byte, er
 
 	gzr := gzipResponseWriter{Writer: gz, ResponseWriter: w}
 	t := time.Now()
-
 	gzr.Write(b)
 	ExecutionTime(t, "gzip for ytes took about")
 }
