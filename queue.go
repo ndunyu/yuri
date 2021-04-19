@@ -94,7 +94,7 @@ func (q *Queue) worker() {
 			return
 
 		case job := <-q.JobQueue:
-			log.Println("i am processing a job")
+
 			q.JobCallBack.Process(job)
 		}
 	}

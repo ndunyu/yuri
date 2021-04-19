@@ -28,7 +28,7 @@ func (w gzipResponseWriter) Write(b []byte) (int, error) {
 }
 
 // JsonGzipBytesResponder /  JsonGzipBytesResponder Gzip the response
-/// "Deprecated:use nginx to Gzip the data"
+/// Deprecated:use nginx to Gzip the data
 /// The you use this method their is an overhead creating the buffer hence instead
 /// of processing 60k request/s your api will process about 4k request/second
 /// thus its better to use nginx to gzip
@@ -48,7 +48,7 @@ func JsonGzipBytesResponder(w http.ResponseWriter, r *http.Request, b []byte, er
 }
 
 // JsonGzipResponder /  JsonGzipResponder Gzip the response
-/// "Deprecated:use nginx to Gzip the data"
+/// Deprecated:use nginx to Gzip the data
 /// The you use this method their is an overhead creating the buffer hence instead
 /// of processing 60k request/s your api will process about 4k request/second
 /// thus its better to use nginx to gzip
