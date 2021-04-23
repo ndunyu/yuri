@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/go-chi/chi v1.5.1
 	github.com/go-pg/pg/v10 v10.7.3
 	github.com/go-playground/universal-translator v0.17.0
