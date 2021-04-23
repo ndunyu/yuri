@@ -3,6 +3,7 @@ package yuri
 import (
 	"mime/multipart"
 	"net/http"
+	"path/filepath"
 )
 
 ///do all function involving images like resizing them
@@ -28,6 +29,8 @@ func GetFileContentType(file multipart.File) (string, error) {
 	return contentType, nil
 }
 
+func GetFileExtension(name string) string {
+	extension := filepath.Ext(name)
 
-
-
+	return extension
+}
