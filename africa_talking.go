@@ -227,5 +227,7 @@ type RequestError struct {
 }
 
 func (r *RequestError) Error() string {
-	return r.Message
+	return fmt.Sprintf("status code is: %d \n  and body is : %s", r.StatusCode, r.Message)
+
+
 }

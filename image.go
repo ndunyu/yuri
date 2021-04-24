@@ -21,13 +21,14 @@ func DownloadFile(URL, dir, prefix string) (*os.File, error) {
 	}
 	defer response.Body.Close()
 
-	if response.StatusCode != 200 {
+	if !(response.StatusCode >= 200 && response.StatusCode <= 299) {
+		b, _ := ioutil.ReadAll(response.Body)
 
-		return nil,&RequestError{
-			StatusCode: response.StatusCode,
-			Message: "received non 200 response code",
-		}
+		return nil, &RequestError{Message: string(b), StatusCode: response.StatusCode}
+
 	}
+
+
 
 	file, err := ioutil.TempFile(dir, prefix)
 	if err != nil {
