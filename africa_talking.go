@@ -224,10 +224,11 @@ type RequestError struct {
 	StatusCode int
 
 	Message string
+	Url string
 }
 
 func (r *RequestError) Error() string {
-	return fmt.Sprintf("status code is: %d \n  and body is : %s", r.StatusCode, r.Message)
+	return fmt.Sprintf("url is: %s \n status code is: %d \n  and body is : %s",r.Url, r.StatusCode, r.Message)
 
 
 }

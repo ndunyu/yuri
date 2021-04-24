@@ -24,7 +24,7 @@ func DownloadFile(URL, dir, prefix string) (*os.File, error) {
 	if !(response.StatusCode >= 200 && response.StatusCode <= 299) {
 		b, _ := ioutil.ReadAll(response.Body)
 
-		return nil, &RequestError{Message: string(b), StatusCode: response.StatusCode}
+		return nil, &RequestError{Url: URL,Message: string(b), StatusCode: response.StatusCode}
 
 	}
 
