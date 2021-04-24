@@ -3,9 +3,9 @@ module github.com/ndunyu/yuri
 go 1.15
 
 require (
-	cloud.google.com/go/storage v1.15.0 // indirect
+	cloud.google.com/go/storage v1.15.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/disintegration/imaging v1.6.2 // indirect
+	github.com/disintegration/imaging v1.6.2
 	github.com/go-chi/chi v1.5.1
 	github.com/go-pg/pg/v10 v10.7.3
 	github.com/go-playground/universal-translator v0.17.0
@@ -18,5 +18,6 @@ require (
 	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/net v0.0.0-20210421230115-4e50805a0758 // indirect
 	golang.org/x/sys v0.0.0-20210421221651-33663a62ff08 // indirect
+	google.golang.org/api v0.45.0
 	google.golang.org/genproto v0.0.0-20210422153429-2279cbceda62 // indirect
 )
