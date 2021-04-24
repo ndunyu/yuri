@@ -39,11 +39,30 @@ func DownloadFile(URL, dir, prefix, fileName string) (*os.File, error) {
 	return file,nil
 }
 
+
+func GetFileContentType(out *os.File) (string, error) {
+
+	// Only the first 512 bytes are used to sniff the content type.
+	buffer := make([]byte, 512)
+
+	_, err := out.Read(buffer)
+	if err != nil {
+		return "", err
+	}
+
+	// Use the net/http package's handy DectectContentType function. Always returns a valid
+	// content-type by returning "application/octet-stream" if no others seemed to match.
+	contentType := http.DetectContentType(buffer)
+
+	return contentType, nil
+}
+
+
 ///do all function involving images like resizing them
 
-// GetFileContentType returns the content type of a file e.g
+// GetMultiPartFileContentType  returns the content type of a file e.g
 ///image/png
-func GetFileContentType(file multipart.File) (string, error) {
+func GetMultiPartFileContentType(file multipart.File) (string, error) {
 
 	// Only the first 512 bytes are used to sniff the content type.
 
