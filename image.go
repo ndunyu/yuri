@@ -34,6 +34,7 @@ func DownloadFile(URL, dir, prefix string) (string, error) {
 		return "", err
 		////log.Fatal(err)
 	}
+	defer file.Close()
 
 	//Write the bytes to the fiel
 	_, err = io.Copy(file, response.Body)
