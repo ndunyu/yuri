@@ -14,7 +14,7 @@ import (
 	"github.com/disintegration/imaging"
 )
 
-func DownloadFile(URL, dir, prefix, fileName string) (*os.File, error) {
+func DownloadFile(URL, dir, prefix string) (*os.File, error) {
 	//Get the response bytes from the url
 	response, err := http.Get(URL)
 	if err != nil {
