@@ -1,7 +1,6 @@
 package yuri
 
 import (
-	"errors"
 	"image"
 	"io"
 	"io/ioutil"
@@ -23,7 +22,11 @@ func DownloadFile(URL, dir, prefix string) (*os.File, error) {
 	defer response.Body.Close()
 
 	if response.StatusCode != 200 {
-		return nil, errors.New("received non 200 response code")
+
+		return nil,&RequestError{
+			StatusCode: response.StatusCode,
+			Message: "received non 200 response code",
+		}
 	}
 
 	file, err := ioutil.TempFile(dir, prefix)
