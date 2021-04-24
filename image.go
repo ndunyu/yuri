@@ -1,9 +1,11 @@
 package yuri
 
 import (
+	"errors"
 	"image"
 	"io"
 	"io/ioutil"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -11,6 +13,31 @@ import (
 
 	"github.com/disintegration/imaging"
 )
+
+func DownloadFile(URL, dir, prefix, fileName string) (*os.File, error) {
+	//Get the response bytes from the url
+	response, err := http.Get(URL)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode != 200 {
+		return nil, errors.New("received non 200 response code")
+	}
+
+	file, err := ioutil.TempFile(dir, prefix)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//Write the bytes to the fiel
+	_, err = io.Copy(file, response.Body)
+	if err != nil {
+		return nil, err
+	}
+	return file,nil
+}
 
 ///do all function involving images like resizing them
 
