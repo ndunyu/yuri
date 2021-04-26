@@ -76,7 +76,7 @@ func (q *Queue) StartWorkers() {
 		q.Wg.Add(1)
 		go q.worker()
 	}
-
+	q.Wg.Wait()
 }
 
 //each goroutine runs this
