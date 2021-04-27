@@ -14,24 +14,24 @@ import (
 	"github.com/disintegration/imaging"
 )
 
-func DownloadFile(URL, dir, prefix string) (string, http.Header, error) {
+func DownloadFile(URL, dir, prefix string) (string, error) {
 	//Get the response bytes from the url
 	response, err := http.Get(URL)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
 	defer response.Body.Close()
 
 	if !(response.StatusCode >= 200 && response.StatusCode <= 299) {
 		b, _ := ioutil.ReadAll(response.Body)
 
-		return "", nil, &RequestError{Url: URL, Message: string(b), StatusCode: response.StatusCode}
+		return "", &RequestError{Url: URL, Message: string(b), StatusCode: response.StatusCode}
 
 	}
 
 	file, err := ioutil.TempFile(dir, prefix)
 	if err != nil {
-		return "", nil, err
+		return "", err
 		////log.Fatal(err)
 	}
 	defer file.Close()
@@ -39,9 +39,9 @@ func DownloadFile(URL, dir, prefix string) (string, http.Header, error) {
 	//Write the bytes to the fiel
 	_, err = io.Copy(file, response.Body)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
-	return file.Name(), response.Header, nil
+	return file.Name(), nil
 }
 
 func GetFileContentTypeWithExtension(paths string) (string, error) {
