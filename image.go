@@ -117,17 +117,32 @@ func CreateATempFile(name string, file io.Reader) (*os.File, error) {
 }
 
 // ResizeImage pass width to either height or width to maintain aspect ratio
-func ResizeImage(images *os.File, width, height int) (*image.Image, error) {
-	reader, err := os.Open(images.Name())
+func ResizeImage(images string, width, height int, dir, prefix string) (string, error) {
+	reader, err := os.Open(images)
+	if err != nil {
+		return "", err
+
+	}
 	var dst image.Image
 	defer reader.Close()
 	src, _, err := image.Decode(reader)
 	if err != nil {
-		return &dst, err
+		return "", err
 
 	}
 	//log.Println("name is ",name)
 	dst = imaging.Resize(src, width, height, imaging.Lanczos)
-	return &dst, nil
+	file, err := ioutil.TempFile(dir, prefix)
+	if err != nil {
+		return "", err
+
+	}
+	defer file.Close()
+	err = imaging.Encode(file, dst, imaging.JPEG)
+	if err != nil {
+		return "", err
+
+	}
+	return file.Name(), nil
 
 }
