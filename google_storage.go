@@ -55,6 +55,11 @@ func UploadFile(Client *storage.Client, bucket, objectName, filename string, isP
 	if isPublic {
 		wc.ACL = []storage.ACLRule{{Entity: storage.AllUsers, Role: storage.RoleReader}}
 	}
+	contentType, err := GetFileContentTypeWithExtension(filename)
+	if err != nil {
+		return nil, err
+	}
+	wc.ContentType = contentType
 
 	if _, err = io.Copy(wc, f); err != nil {
 		return nil, fmt.Errorf("io.Copy: %v", err)
@@ -64,4 +69,3 @@ func UploadFile(Client *storage.Client, bucket, objectName, filename string, isP
 	}
 	return wc, nil
 }
-
