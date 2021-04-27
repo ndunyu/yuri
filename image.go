@@ -4,34 +4,34 @@ import (
 	"image"
 	"io"
 	"io/ioutil"
+	"mime"
 	"mime/multipart"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 
 	"github.com/disintegration/imaging"
 )
 
-func DownloadFile(URL, dir, prefix string) (string, error) {
+func DownloadFile(URL, dir, prefix string) (string, http.Header, error) {
 	//Get the response bytes from the url
 	response, err := http.Get(URL)
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 	defer response.Body.Close()
 
 	if !(response.StatusCode >= 200 && response.StatusCode <= 299) {
 		b, _ := ioutil.ReadAll(response.Body)
 
-		return "", &RequestError{Url: URL, Message: string(b), StatusCode: response.StatusCode}
+		return "", nil, &RequestError{Url: URL, Message: string(b), StatusCode: response.StatusCode}
 
 	}
 
-
-
 	file, err := ioutil.TempFile(dir, prefix)
 	if err != nil {
-		return "", err
+		return "", nil, err
 		////log.Fatal(err)
 	}
 	defer file.Close()
@@ -39,11 +39,25 @@ func DownloadFile(URL, dir, prefix string) (string, error) {
 	//Write the bytes to the fiel
 	_, err = io.Copy(file, response.Body)
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
-	return file.Name(),nil
+	return file.Name(), response.Header, nil
 }
 
+func GetFileContentTypeWithExtension(paths string) (string, error) {
+	fileType := mime.TypeByExtension(path.Ext(paths))
+	if fileType == "" {
+		f, err := os.Open(paths)
+		if err != nil {
+			return "", err
+		}
+		defer f.Close()
+		fileType, err = GetFileContentType(f)
+
+	}
+	return fileType, nil
+
+}
 
 func GetFileContentType(out *os.File) (string, error) {
 
@@ -61,7 +75,6 @@ func GetFileContentType(out *os.File) (string, error) {
 
 	return contentType, nil
 }
-
 
 ///do all function involving images like resizing them
 
