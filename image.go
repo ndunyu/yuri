@@ -131,7 +131,7 @@ func ResizeImage(images string, width, height int, dir, prefix string) (string, 
 
 	}
 	//log.Println("name is ",name)
-	dst = imaging.Resize(src, width, height, imaging.Lanczos)
+	dst = imaging.Resize(src, width, height, imaging.Linear)
 	file, err := ioutil.TempFile(dir, prefix)
 	if err != nil {
 		return "", err
