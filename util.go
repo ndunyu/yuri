@@ -260,6 +260,12 @@ func InterfaceToStruct(input interface{}, outputStruct interface{}) error {
 
 }
 
+func InterfaceToString(input interface{}) string {
+	str := fmt.Sprintf("%v", input)
+	return str
+
+}
+
 func ToString(data interface{}) (string, error) {
 	b, err := json.Marshal(data)
 	if err != nil {
