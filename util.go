@@ -8,6 +8,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -73,6 +74,7 @@ func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 	ni.Valid = true
 	return nil
 }
+
 //check if a string can be converted into an integer
 func StringIsInt(s string) (*int, bool) {
 	i, err := strconv.Atoi(s)
@@ -244,6 +246,18 @@ func MakeTimestamp() int64 {
 	t := time.Now()
 	tUnixMilli := int64(time.Nanosecond) * t.UnixNano() / int64(time.Millisecond)
 	return tUnixMilli
+}
+
+func InterfaceToStruct(input interface{}, outputStruct interface{}) error {
+
+	if reflect.ValueOf(outputStruct).Kind() != reflect.Ptr {
+		return errors.New("output must be a pointer")
+
+	}
+	str := fmt.Sprintf("%v", input)
+	err := json.Unmarshal([]byte(str), outputStruct)
+	return err
+
 }
 
 func ToString(data interface{}) (string, error) {
