@@ -21,11 +21,8 @@ func InsertItem(item interface{}, DB *pg.DB) *ErrResponse {
 	}
 	_,err := DB.Model(&item).Insert(item)
 	if err != nil {
-
 		return ErrInternalServerError
-
 	}
-
 	return nil
 
 }

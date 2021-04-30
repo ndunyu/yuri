@@ -14,15 +14,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ttacon/libphonenumber"
-
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/chi"
 	uuid "github.com/satori/go.uuid"
+	"github.com/ttacon/libphonenumber"
 	"golang.org/x/crypto/bcrypt"
 )
 
-///User may send data to a struct property
+// IntStringOrFloatColumn /User may send data to a struct property
 ///as a string int or float,this will convert them to a string
 ///and save them to the database as a string (Var char)
 //It will also make sure json does not complain
@@ -39,11 +38,6 @@ func (ni *IntStringOrFloatColumn) MarshalJSON() ([]byte, error) {
 	return json.Marshal(ni.String)
 }
 
-func ExecutionTime(start time.Time, name string) {
-	elapsed := time.Since(start)
-	log.Printf("%s took %s", name, elapsed)
-}
-
 func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 	var item interface{}
 	if err := json.Unmarshal(b, &item); err != nil {
@@ -54,7 +48,6 @@ func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 	case int:
 		log.Println("type of is int", v)
 		ni.String = IntToString(v)
-
 		// v is an int here, so e.g. v + 1 is possible.
 
 	case float64:
@@ -82,6 +75,10 @@ func StringIsInt(s string) (*int, bool) {
 		return nil, false
 	}
 	return &i, true
+}
+func ExecutionTime(start time.Time, name string) {
+	elapsed := time.Since(start)
+	log.Printf("%s took %s", name, elapsed)
 }
 func IsEmpty(s string) bool {
 	if len(strings.TrimSpace(s)) == 0 {
@@ -263,6 +260,21 @@ func InterfaceToStruct(input interface{}, outputStruct interface{}) error {
 func InterfaceToString(input interface{}) string {
 	str := fmt.Sprintf("%v", input)
 	return str
+
+}
+func StructToMap(input interface{}) error {
+	if reflect.ValueOf(input).Kind() != reflect.Ptr {
+		return errors.New("output must be a pointer")
+
+	}
+	var myInterface map[string]interface{}
+	toString, err := ToString(input)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal([]byte(toString), &myInterface)
+
+	return err
 
 }
 
