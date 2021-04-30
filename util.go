@@ -262,19 +262,19 @@ func InterfaceToString(input interface{}) string {
 	return str
 
 }
-func StructToMap(input interface{}) error {
+func StructToMap(input interface{}) (map[string]interface{}, error) {
 	if reflect.ValueOf(input).Kind() != reflect.Ptr {
-		return errors.New("output must be a pointer")
+		return nil, errors.New("output must be a pointer")
 
 	}
 	var myInterface map[string]interface{}
 	toString, err := ToString(input)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	err = json.Unmarshal([]byte(toString), &myInterface)
 
-	return err
+	return myInterface,err
 
 }
 
