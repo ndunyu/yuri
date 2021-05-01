@@ -267,7 +267,7 @@ func InterfaceToString(input interface{}) string {
 }
 func StructToMap(input interface{}) (map[string]interface{}, error) {
 	if reflect.ValueOf(input).Kind() != reflect.Ptr {
-		return nil, errors.New("output must be a pointer")
+		return nil, errors.New("input must be a pointer")
 
 	}
 	var myInterface map[string]interface{}
