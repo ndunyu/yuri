@@ -271,11 +271,12 @@ func StructToMap(input interface{}) (map[string]interface{}, error) {
 
 	}
 	var myInterface map[string]interface{}
-	toString, err := ToString(input)
+	toJson, err := ToJson(input)
+
 	if err != nil {
 		return nil, err
 	}
-	err = json.Unmarshal([]byte(toString), &myInterface)
+	err = json.Unmarshal(toJson, &myInterface)
 
 	return myInterface,err
 
