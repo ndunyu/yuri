@@ -251,8 +251,11 @@ func InterfaceToStruct(input interface{}, outputStruct interface{}) error {
 		return errors.New("output must be a pointer")
 
 	}
-	str := fmt.Sprintf("%v", input)
-	err := json.Unmarshal([]byte(str), outputStruct)
+	toJson, err := ToJson(input)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(toJson, outputStruct)
 	return err
 
 }
