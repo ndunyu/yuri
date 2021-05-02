@@ -4,7 +4,6 @@ import (
 	"image"
 	"io"
 	"io/ioutil"
-	"log"
 	"mime"
 	"mime/multipart"
 	"net/http"
@@ -144,7 +143,7 @@ func ResizeImage(images string, width, height int, dir, prefix string, extension
 	}
 	defer file.Close()
 	format := FormatFromExtension(withExtension)
-	log.Println("format used is", format)
+
 	err = imaging.Encode(file, dst, format)
 	if err != nil {
 		return "", err

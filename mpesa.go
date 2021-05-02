@@ -159,10 +159,10 @@ func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHe
 	///var respe map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 
-		PrintStruct(err)
+
 		return nil, errors.New("error converting from json")
 	}
-	///PrintStruct(respe)
+
 	return &response, nil
 
 }
@@ -177,7 +177,7 @@ func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{},respIt
 
 	token, err := m.GetAccessToken()
 	if err != nil {
-		log.Println("ahhaa")
+
 		return  err
 	}
 	log.Println(token.AccessToken)
@@ -210,7 +210,7 @@ func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{},respIt
 		PrintStruct(err)
 		return  errors.New("error converting from json")
 	}
-	///PrintStruct(respe)
+
 	return  nil
 
 }
@@ -292,7 +292,7 @@ func (m *Mpesa) GetAccessToken() (*AccessTokenResponse, error) {
 		return nil, err
 	}
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
-		log.Println(resp.StatusCode)
+
 
 		b, _:= ioutil.ReadAll(resp.Body)
 		if string(b)=="" {

@@ -46,7 +46,7 @@ func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 	}
 	switch v := item.(type) {
 	case int:
-		log.Println("type of is int", v)
+
 		ni.String = IntToString(v)
 		// v is an int here, so e.g. v + 1 is possible.
 
@@ -54,7 +54,7 @@ func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 		ni.String = fmt.Sprintf("%.0f", v)
 
 	case string:
-		log.Println("type of is string", v)
+
 		ni.String = v
 
 	default:
