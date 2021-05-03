@@ -6,9 +6,12 @@ import (
 )
 
 // Process work on the queued item
-type Process interface {
+/*type Process interface {
 	Process(interface{})
-}
+}*/
+
+type Process func (interface{})
+
 type Queue struct {
 	//Workers Number of goroutines(workers,consumers) to be used to process the jobs
 	Workers int
@@ -37,6 +40,7 @@ func NewQueue(workers int, capacity int, jobCallBack Process) Queue {
 	var wg sync.WaitGroup
 	jobQueue := make(chan interface{}, capacity)
 	quit := make(chan struct{})
+
 	return Queue{
 		Workers:     workers,
 		JobQueue:    jobQueue,
@@ -183,7 +187,7 @@ func (q *Queue) worker() {
 
 		case job := <-q.JobQueue:
 			//a job has been received  process the job
-			q.JobCallBack.Process(job)
+			q.JobCallBack(job)
 		}
 	}
 }
