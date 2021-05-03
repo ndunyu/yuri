@@ -68,6 +68,22 @@ func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //check if a string can be converted into an integer
 func StringIsInt(s string) (*int, bool) {
 	i, err := strconv.Atoi(s)
