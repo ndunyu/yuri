@@ -58,8 +58,8 @@ func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 		ni.String = v
 
 	default:
-		fmt.Printf("%T\n", item)
-		log.Println("unknwn type  of is int", v)
+		//fmt.Printf("%T\n", item)
+		///log.Println("unknwn type  of is int", v)
 		// And here I'm feeling dumb. ;)
 	}
 	///err := json.Unmarshal(b, &ni.String)

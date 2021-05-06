@@ -4,14 +4,12 @@ import (
 	"log"
 	"sync"
 )
-
 // Process work on the queued item
-/*type Process interface {
+/*type JobCallBack interface {
 	Process(interface{})
 }*/
 
-type Process func (interface{})
-
+type Process func (job interface{})
 type Queue struct {
 	//Workers Number of goroutines(workers,consumers) to be used to process the jobs
 	Workers int
