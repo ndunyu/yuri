@@ -92,6 +92,10 @@ func StringIsInt(s string) (*int, bool) {
 	}
 	return &i, true
 }
+
+func StringToInt(s string) (int, error) {
+	return strconv.Atoi(s)
+}
 func ExecutionTime(start time.Time, name string) {
 	elapsed := time.Since(start)
 	log.Printf("%s took %s", name, elapsed)
