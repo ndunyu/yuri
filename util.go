@@ -80,7 +80,13 @@ func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 
 
 
+const millisInSecond = 1000
+const nsInSecond = 1000000
 
+// FromUnixMilli Converts Unix Epoch from milliseconds to time.Time
+func MilliToTime(ms int64) time.Time {
+	return time.Unix(ms/int64(millisInSecond), (ms%int64(millisInSecond))*int64(nsInSecond))
+}
 
 
 
