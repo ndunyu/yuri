@@ -14,9 +14,9 @@ import "time"
 type Models struct {
 	ID int `json:"id"`
 
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt time.Time `json:"created_at" sql:"DEFAULT:current_timestamp"`
 
-	UpdatedAt time.Time `json:"updated_at"`
+	UpdatedAt time.Time `json:"updated_at" sql:"DEFAULT:current_timestamp"`
 	DeletedAt time.Time `pg:",soft_delete"`
 }
 
