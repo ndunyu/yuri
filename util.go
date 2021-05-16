@@ -68,27 +68,13 @@ func (ni *IntStringOrFloatColumn) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 const millisInSecond = 1000
 const nsInSecond = 1000000
 
-// FromUnixMilli Converts Unix Epoch from milliseconds to time.Time
+// MilliToTime FromUnixMilli Converts Unix Epoch from milliseconds to time.Time
 func MilliToTime(ms int64) time.Time {
 	return time.Unix(ms/int64(millisInSecond), (ms%int64(millisInSecond))*int64(nsInSecond))
 }
-
-
 
 //check if a string can be converted into an integer
 func StringIsInt(s string) (*int, bool) {
@@ -304,7 +290,7 @@ func StructToMap(input interface{}) (map[string]interface{}, error) {
 	}
 	err = json.Unmarshal(toJson, &myInterface)
 
-	return myInterface,err
+	return myInterface, err
 
 }
 
