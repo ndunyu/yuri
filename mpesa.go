@@ -8,7 +8,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"encoding/pem"
-	errors "errors"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -37,39 +37,30 @@ func (m *Mpesa) SetMode(mode bool) {
 
 }
 
-func (m *Mpesa)StkPushRequest(body StKPushRequestBody, passKey string) (*StkPushResult, error) {
-	if body.Timestamp=="" {
+func (m *Mpesa) StkPushRequest(body StKPushRequestBody, passKey string) (*StkPushResult, error) {
+	if body.Timestamp == "" {
 		t := time.Now()
 		fTime := t.Format("20060102150405")
-		body.Timestamp= fTime
-		body.Password=GeneratePassword(body.BusinessShortCode,passKey, fTime)
+		body.Timestamp = fTime
+		body.Password = GeneratePassword(body.BusinessShortCode, passKey, fTime)
 	}
-	body.TransactionType=CustomerPayBillOnline
+	body.TransactionType = CustomerPayBillOnline
 	var stkPushResult StkPushResult
-	err:=m.sendAndProcessStkPushRequest(m.getStkPush(),body,&stkPushResult,nil)
-	return  &stkPushResult,err
+	err := m.sendAndProcessStkPushRequest(m.getStkPush(), body, &stkPushResult, nil)
+	return &stkPushResult, err
 }
 
-func (m *Mpesa)StkPushQuery(body StkPushQueryRequestBody,passKey string)(*StkPushQueryResponseBody, error){
-
-	if body.Timestamp=="" {
+func (m *Mpesa) StkPushQuery(body StkPushQueryRequestBody, passKey string) (*StkPushQueryResponseBody, error) {
+	if body.Timestamp == "" {
 		t := time.Now()
 		fTime := t.Format("20060102150405")
-		body.Timestamp= fTime
-		body.Password=GeneratePassword(body.BusinessShortCode,passKey, fTime)
+		body.Timestamp = fTime
+		body.Password = GeneratePassword(body.BusinessShortCode, passKey, fTime)
 	}
-
 	var stkPushResult StkPushQueryResponseBody
-	err:=m.sendAndProcessStkPushRequest(m.getStkPushQuery(),body,&stkPushResult,nil)
-	return  &stkPushResult,err
-
-
-
-
+	err := m.sendAndProcessStkPushRequest(m.getStkPushQuery(), body, &stkPushResult, nil)
+	return &stkPushResult, err
 }
-
-
-
 
 
 // B2CRequest Sends Money from a business to the Customer
@@ -111,7 +102,7 @@ func (m *Mpesa) AccountBalanceRequest(balance AccountBalanceRequestBody) (*Mpesa
 func (m *Mpesa) TransactionStatusRequest(transactionStatusRequestBody TransactionStatusRequestBody) (*MpesaResult, error) {
 	////1 for user
 	///4 for organization (indentifiertype)
-	transactionStatusRequestBody.CommandID=TransactionStatusQuery
+	transactionStatusRequestBody.CommandID = TransactionStatusQuery
 	return m.sendAndProcessMpesaRequest(m.getTransactionStatusUrl(), transactionStatusRequestBody, nil)
 
 }
@@ -147,7 +138,6 @@ func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHe
 		return nil, err
 	}
 
-
 	defer resp.Body.Close()
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
 		b, _ := ioutil.ReadAll(resp.Body)
@@ -159,7 +149,6 @@ func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHe
 	///var respe map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 
-
 		return nil, errors.New("error converting from json")
 	}
 
@@ -167,7 +156,7 @@ func (m *Mpesa) sendAndProcessMpesaRequest(url string, data interface{}, extraHe
 
 }
 
-func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{},respItem interface{}, extraHeader map[string]string) (error) {
+func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{}, respItem interface{}, extraHeader map[string]string) error {
 	if reflect.ValueOf(respItem).Kind() != reflect.Ptr {
 		log.Println("not a pointer")
 
@@ -178,7 +167,7 @@ func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{},respIt
 	token, err := m.GetAccessToken()
 	if err != nil {
 
-		return  err
+		return err
 	}
 	log.Println(token.AccessToken)
 	headers := make(map[string]string)
@@ -194,13 +183,13 @@ func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{},respIt
 	resp, err := postRequest(url, data, headers)
 	if err != nil {
 
-		return  err
+		return err
 	}
 	defer resp.Body.Close()
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
 		b, _ := ioutil.ReadAll(resp.Body)
 
-		return  &RequestError{Message: string(b), StatusCode: resp.StatusCode}
+		return &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
 
@@ -208,17 +197,14 @@ func (m *Mpesa) sendAndProcessStkPushRequest(url string, data interface{},respIt
 	if err := json.NewDecoder(resp.Body).Decode(respItem); err != nil {
 
 		PrintStruct(err)
-		return  errors.New("error converting from json")
+		return errors.New("error converting from json")
 	}
 
-	return  nil
+	return nil
 
 }
 
-
 func getRequest(url string, headers map[string]string, queryParameters map[string]string) (*http.Response, error) {
-
-
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -234,8 +220,6 @@ func getRequest(url string, headers map[string]string, queryParameters map[strin
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}
-
-
 
 	client := &http.Client{
 		//Timeout: 20 * time.Second
@@ -269,8 +253,6 @@ func postRequest(url string, data interface{}, headers map[string]string) (*http
 
 }
 
-
-
 //GetAccessToken will get the token to be used to query data
 func (m *Mpesa) GetAccessToken() (*AccessTokenResponse, error) {
 	req, err := http.NewRequest(http.MethodGet, m.getAccessTokenUrl(), nil)
@@ -293,10 +275,9 @@ func (m *Mpesa) GetAccessToken() (*AccessTokenResponse, error) {
 	}
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
 
-
-		b, _:= ioutil.ReadAll(resp.Body)
-		if string(b)=="" {
-			return   nil, &RequestError{Message: "Error getting token", StatusCode: resp.StatusCode}
+		b, _ := ioutil.ReadAll(resp.Body)
+		if string(b) == "" {
+			return nil, &RequestError{Message: "Error getting token", StatusCode: resp.StatusCode}
 
 		}
 		return nil, &RequestError{Message: string(b), StatusCode: resp.StatusCode}
@@ -318,7 +299,6 @@ func (m *Mpesa) GetSecurityCredential(initiatorPassword string) (string, error) 
 		fileName = "https://developer.safaricom.co.ke/sites/default/files/cert/cert_prod/cert.cer"
 	} else {
 		fileName = "https://developer.safaricom.co.ke/sites/default/files/cert/cert_sandbox/cert.cer"
-
 
 	}
 	resp, err := getRequest(fileName, nil, nil)
@@ -350,7 +330,7 @@ func (m *Mpesa) GetSecurityCredential(initiatorPassword string) (string, error) 
 
 }
 func GeneratePassword(shortCode, passkey, time string) string {
-	password := fmt.Sprintf("%s%s%s", shortCode,passkey, time)
+	password := fmt.Sprintf("%s%s%s", shortCode, passkey, time)
 	return base64.StdEncoding.EncodeToString([]byte(password))
 
 }

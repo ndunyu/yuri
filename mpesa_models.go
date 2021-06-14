@@ -62,6 +62,7 @@ type StkPushQueryResponseBody struct {
 
 
 
+
 type StKPushRequestBody struct {
 	BusinessShortCode string
 	Password string
