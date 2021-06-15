@@ -21,6 +21,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+var seededRand *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
 // IntStringOrFloatColumn /User may send data to a struct property
 ///as a string int or float,this will convert them to a string
 ///and save them to the database as a string (Var char)
@@ -361,4 +363,12 @@ func ContainsString(s []string, e string) bool {
 		}
 	}
 	return false
+}
+
+func CreateRandomString(length int) string {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(b)
 }
