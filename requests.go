@@ -47,6 +47,22 @@ func DynamicData(r *http.Request, dataname string) ([]byte, error) {
 	return []byte(data), nil
 }
 
+func ReadFileDataToStruct(r *http.Request, dataname string, output interface{}) error {
+	if reflect.ValueOf(output).Kind() != reflect.Ptr {
+		log.Println("not a pointer")
+
+		return errors.New("out put must be a pointer")
+
+	}
+	data, err := DynamicData(r, dataname)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(data, output)
+
+	return err
+}
+
 func ReadRequestFileNoName(r *http.Request, filename string, storagePath string, BaseUrl string) (string, string, error) {
 	_ = r.ParseMultipartForm(32 << 20)
 	file, handler, err := r.FormFile(filename)
@@ -194,10 +210,9 @@ func (p *Pagination) GetPagination(r *http.Request) {
 
 	p.ProcessPagination()
 
-
 }
 
-func (p *Pagination) ProcessPagination(){
+func (p *Pagination) ProcessPagination() {
 	if p.Max == 0 {
 		p.Max = 40
 
