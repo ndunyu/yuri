@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/golang-jwt/jwt/v4"
 	"log"
 	"math/rand"
 	"net/http"
@@ -14,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+
 	"github.com/go-chi/chi"
 	uuid "github.com/satori/go.uuid"
 	"github.com/ttacon/libphonenumber"
