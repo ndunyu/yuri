@@ -23,8 +23,8 @@ func (J *Jenga) getBaseUrl() string {
 	return JengaLiveUrl
 
 }
-func (J *Jenga)getAccountBalanceUrl(countryCode, accountId string) string {
-	url:=fmt.Sprintf(accountBalance,countryCode,accountId)
+func (J *Jenga) getAccountBalanceUrl(countryCode, accountId string) string {
+	url := fmt.Sprintf(accountBalance, countryCode, accountId)
 	return J.getBaseUrl() + url
 
 }
@@ -41,7 +41,7 @@ func (J *Jenga) getPesaLinkToBankUrl() string {
 	return J.getBaseUrl() + pesaLinkToBankUrl
 }
 
-func (J *Jenga) getEquityToEquityUrl()string {
+func (J *Jenga) getEquityToEquityUrl() string {
 
 	return J.getBaseUrl() + equityToequity
 

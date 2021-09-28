@@ -4,9 +4,7 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
-
 )
 
 ////it takes in  a request object reads its data
@@ -19,7 +17,7 @@ func InsertItem(item interface{}, DB *pg.DB) *ErrResponse {
 		return ErrInvalidRequest
 
 	}
-	_,err := DB.Model(&item).Insert(item)
+	_, err := DB.Model(&item).Insert(item)
 	if err != nil {
 		return ErrInternalServerError
 	}
@@ -96,7 +94,6 @@ func GetItemsHandler(item interface{}, q *orm.Query, p *Pagination) (*ResponseDa
 	return &response, nil
 }
 
-
 ///func get many items
 func GetMultipleItems(item interface{}, q *orm.Query, p *Pagination) (*ResponseData, error) {
 	if p != nil {
@@ -115,9 +112,6 @@ func GetMultipleItems(item interface{}, q *orm.Query, p *Pagination) (*ResponseD
 
 	return &response, nil
 }
-
-
-
 
 ///get a single item and its relations if any
 func GetItemHandler(q *orm.Query) *ErrResponse {

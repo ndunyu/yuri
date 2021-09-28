@@ -8,8 +8,6 @@ import (
 	"io"
 	"net/http"
 	"time"
-
-	"github.com/go-pg/pg/v10"
 )
 
 type ResponseData struct {

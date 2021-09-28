@@ -62,7 +62,6 @@ func (m *Mpesa) StkPushQuery(body StkPushQueryRequestBody, passKey string) (*Stk
 	return &stkPushResult, err
 }
 
-
 // B2CRequest Sends Money from a business to the Customer
 func (m *Mpesa) B2CRequest(b2c B2CRequestBody) (*MpesaResult, error) {
 	if b2c.CommandID == "" {

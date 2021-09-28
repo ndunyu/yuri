@@ -4,9 +4,8 @@ import (
 	"log"
 )
 
-func B2CExample(ConsumerKey, ConsumerSecret,sec  string) {
+func B2CExample(ConsumerKey, ConsumerSecret, sec string) {
 	mpesa := NewMpesa(ConsumerKey, ConsumerSecret, false)
-
 
 	///security, err := mpesa.GetSecurityCredential(initiatorPassword)
 	resp, err := mpesa.B2CRequest(B2CRequestBody{

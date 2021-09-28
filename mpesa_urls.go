@@ -8,13 +8,10 @@ const b2cUrl = "mpesa/b2c/v1/paymentrequest"
 const b2bUrl = "mpesa/b2b/v1/paymentrequest"
 const balance = "mpesa/accountbalance/v1/query"
 const transactionStatus = "mpesa/transactionstatus/v1/query"
-const registerUrl="mpesa/c2b/v1/registerurl"
-const simulateC2BUrl="mpesa/c2b/v1/simulate"
-const stkPush="mpesa/stkpush/v1/processrequest"
-const stkPushQuery="mpesa/stkpushquery/v1/query"
-
-
-
+const registerUrl = "mpesa/c2b/v1/registerurl"
+const simulateC2BUrl = "mpesa/c2b/v1/simulate"
+const stkPush = "mpesa/stkpush/v1/processrequest"
+const stkPushQuery = "mpesa/stkpushquery/v1/query"
 
 func (m *Mpesa) getStkPush() string {
 
@@ -54,15 +51,13 @@ func (m *Mpesa) getTransactionStatusUrl() string {
 
 }
 
-func (m *Mpesa)getC2BRegisterUrl() string {
-
+func (m *Mpesa) getC2BRegisterUrl() string {
 
 	return m.getBaseUrl() + registerUrl
 
-
 }
-func(m *Mpesa)getC2BSimulationUrl()string{
-return  m.getBaseUrl()+simulateC2BUrl
+func (m *Mpesa) getC2BSimulationUrl() string {
+	return m.getBaseUrl() + simulateC2BUrl
 
 }
 
@@ -75,4 +70,3 @@ func (m *Mpesa) getBaseUrl() string {
 	return MpesaLiveUrl
 
 }
-

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/golang-jwt/jwt/v4"
 	"log"
 	"math/rand"
 	"net/http"
@@ -15,7 +14,6 @@ import (
 	"strings"
 	"time"
 
-
 	"github.com/go-chi/chi"
 	uuid "github.com/satori/go.uuid"
 	"github.com/ttacon/libphonenumber"
@@ -23,7 +21,9 @@ import (
 )
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
 var seededRand *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
+
 // IntStringOrFloatColumn /User may send data to a struct property
 ///as a string int or float,this will convert them to a string
 ///and save them to the database as a string (Var char)

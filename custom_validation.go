@@ -2,7 +2,6 @@ package yuri
 
 import (
 	ut "github.com/go-playground/universal-translator"
-	"github.com/go-playground/validator/v10"
 )
 
 func PhoneNumberValidation(fl validator.FieldLevel) bool {
@@ -16,11 +15,10 @@ func TranslateErrors(trans ut.Translator, err error) []Field {
 	em := []Field{}
 	for _, e := range errs {
 		// can translate each error one at a time.
-        f:=Field{
+		f := Field{
 			//Field:   m,
-			Message:e.Translate(trans) ,
+			Message: e.Translate(trans),
 		}
-
 
 		em = append(em, f)
 

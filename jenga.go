@@ -76,8 +76,7 @@ func (J *Jenga) PesaLinkMoneyTransfer(request PesaLinkRequest) (*PesaLinkRespons
 	request.Transfer.Type = "PesaLink"
 	var sigString string
 
-	sigString = joinStrings( request.Transfer.Amount,request.Transfer.CurrencyCode, request.Transfer.Reference, request.Destination.Name, request.Source.AccountNumber)
-
+	sigString = joinStrings(request.Transfer.Amount, request.Transfer.CurrencyCode, request.Transfer.Reference, request.Destination.Name, request.Source.AccountNumber)
 
 	err := J.sendAndProcessJengaRequest(J.getPesaLinkToBankUrl(), sigString, request, &pesaLinkResponse, nil)
 	return &pesaLinkResponse, err
@@ -85,13 +84,12 @@ func (J *Jenga) PesaLinkMoneyTransfer(request PesaLinkRequest) (*PesaLinkRespons
 func (J *Jenga) EquityToEquityMoneyTransfer(request PesaLinkRequest) (*PesaLinkResponse, error) {
 	request.Destination.Type = "bank"
 	var pesaLinkResponse PesaLinkResponse
-	request.Transfer.Type="InternalFundsTransfer"
-	sigString := joinStrings( request.Source.AccountNumber,request.Transfer.Amount, request.Transfer.CurrencyCode, request.Transfer.Reference)
+	request.Transfer.Type = "InternalFundsTransfer"
+	sigString := joinStrings(request.Source.AccountNumber, request.Transfer.Amount, request.Transfer.CurrencyCode, request.Transfer.Reference)
 	err := J.sendAndProcessJengaRequest(J.getEquityToEquityUrl(), sigString, request, &pesaLinkResponse, nil)
 	return &pesaLinkResponse, err
 
 }
-
 
 func (J *Jenga) PurchaseAirtime(airtimeRequest AirtimeRequest) (*AirtimeResponse, error) {
 
@@ -159,8 +157,6 @@ func (J *Jenga) GetAccessToken() (*JengaAccessToken, error) {
 func (J *Jenga) getAndProcessJengaRequest(url, sigString string, response interface{}, queryParameters, extraHeader map[string]string) error {
 	if reflect.ValueOf(response).Kind() != reflect.Ptr {
 
-
-
 		return errors.New("response should be a pointer")
 
 	}
@@ -169,7 +165,6 @@ func (J *Jenga) getAndProcessJengaRequest(url, sigString string, response interf
 
 		return err
 	}
-
 
 	headers := make(map[string]string)
 	if !IsEmpty(sigString) {
@@ -218,7 +213,6 @@ func (J *Jenga) sendAndProcessJengaRequest(url, sigString string, data interface
 
 	if reflect.ValueOf(response).Kind() != reflect.Ptr {
 
-
 		return errors.New("response should be a pointer")
 
 	}
@@ -228,8 +222,6 @@ func (J *Jenga) sendAndProcessJengaRequest(url, sigString string, data interface
 	}
 	s := strings.TrimSpace(sigString)
 	signature, err := SignSha256DataWithPrivateKey(s, J.PrivateKeyPath)
-
-
 
 	if err != nil {
 
@@ -257,7 +249,6 @@ func (J *Jenga) sendAndProcessJengaRequest(url, sigString string, data interface
 		return &RequestError{Message: string(b), StatusCode: resp.StatusCode}
 
 	}
-
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 

@@ -1,22 +1,14 @@
 package yuri
 
-
-
-
-
-
-
 ///Jenga Balance
 type JengaBalance struct {
 	Currency string     `json:"currency"`
 	Balances []Balances `json:"balances"`
 }
 type Balances struct {
-	Amount   float64 `json:"amount,string"`
-	Type   string `json:"type"`
+	Amount float64 `json:"amount,string"`
+	Type   string  `json:"type"`
 }
-
-
 
 type JengaAccessToken struct {
 	TokenType   string `json:"token_type"`
@@ -179,13 +171,12 @@ func (p *PesaLinkRequest) Validate() {
 
 ///Response
 type PesaLinkResponse struct {
-	TransactionId string `json:"transactionId"`
-	Status        string `json:"status"`
-	Description   string `json:"description"`
-	ResponseCode string `json:"response_code"`
-	ResponseMsg string `json:"response_msg"`
+	TransactionId  string `json:"transactionId"`
+	Status         string `json:"status"`
+	Description    string `json:"description"`
+	ResponseCode   string `json:"response_code"`
+	ResponseMsg    string `json:"response_msg"`
 	ResponseStatus string `json:"response_status"`
-
 }
 
 ////PesaLink ends here

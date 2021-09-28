@@ -5,28 +5,21 @@ type AccessTokenResponse struct {
 	ExpiresIn   string `json:"expires_in"`
 }
 
-
 type StkPushResult struct {
 	///
-	CheckoutRequestID string
-	CustomerMessage string
-	MerchantRequestID string
-	ResponseCode string
+	CheckoutRequestID   string
+	CustomerMessage     string
+	MerchantRequestID   string
+	ResponseCode        string
 	ResponseDescription string
-
 }
-
-
-
-
-
 
 type StkPushResponseBody struct {
 	Body Body `json:"Body"`
 }
 type Item struct {
-	Name  string `json:"Name"`
-	Value interface{}   `json:"Value,omitempty"`
+	Name  string      `json:"Name"`
+	Value interface{} `json:"Value,omitempty"`
 }
 type CallbackMetadata struct {
 	Item []Item `json:"Item"`
@@ -41,35 +34,31 @@ type StkCallback struct {
 type Body struct {
 	StkCallback StkCallback `json:"stkCallback"`
 }
+
 ///when querying for success/failure
 type StkPushQueryRequestBody struct {
-	BusinessShortCode	string
-	Password	string
-	Timestamp	string
-	CheckoutRequestID	string
+	BusinessShortCode string
+	Password          string
+	Timestamp         string
+	CheckoutRequestID string
 }
 
 type StkPushQueryResponseBody struct {
-	MerchantRequestID	string
-	CheckoutRequestID	string
-	ResponseCode	string
-	ResultDesc	string
-	ResponseDescription	string
-	ResultCode	string
-
+	MerchantRequestID   string
+	CheckoutRequestID   string
+	ResponseCode        string
+	ResultDesc          string
+	ResponseDescription string
+	ResultCode          string
 }
-
-
-
-
 
 type StKPushRequestBody struct {
 	BusinessShortCode string
-	Password string
-	Timestamp string
+	Password          string
+	Timestamp         string
 	///use only [ CustomerPayBillOnline ]
 	TransactionType string
-	Amount string
+	Amount          string
 	//sender phone number
 	PartyA string
 	///receiver shortcode
@@ -82,18 +71,17 @@ type StKPushRequestBody struct {
 	AccountReference string
 	//
 	TransactionDesc string
-
-
 }
+
 // MpesaResponse is returned by every mpesa api
 // Here
 // i.e that is when we call Mpesa.sendAndProcessMpesaRequest
 type MpesaResult struct {
-	ConversationID           string `json:"ConversationID"`
+	ConversationID          string `json:"ConversationID"`
 	OriginatorCoversationID string `json:"OriginatorCoversationID"`
 	/// OriginatorConversationID string `json:"OriginatorConversationID"`
-	ResponseCode             string `json:"ResponseCode"`
-	ResponseDescription   string `json:"ResponseDescription"`
+	ResponseCode        string `json:"ResponseCode"`
+	ResponseDescription string `json:"ResponseDescription"`
 	///ResponseDescription      string `json:"ResponseDescription"`
 }
 
@@ -190,7 +178,7 @@ type C2BValidationAndConfirmationResponse struct {
 	MiddleName        string
 	OrgAccountBalance string
 	ThirdPartyTransID string
-	TransAmount        float64 `json:",string"`
+	TransAmount       float64 `json:",string"`
 	TransID           string
 	TransTime         string
 	TransactionType   string
@@ -268,7 +256,7 @@ type Result struct {
 	ConversationID string `json:"ConversationID"`
 	ResultType     int    `json:"ResultType"`
 
-	ResultCode string    `json:"ResultCode"`
+	ResultCode string `json:"ResultCode"`
 	ResultDesc string `json:"ResultDesc"`
 
 	OriginatorConversationID string `json:"OriginatorConversationID"`

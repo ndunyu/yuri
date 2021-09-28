@@ -15,7 +15,6 @@ const SandboxUrl = "https://api.sandbox.africastalking.com/version1/"
 const SMSUrl = "messaging"
 const AirtimeUrl = "airtime/send"
 
-
 type AfricaTalking struct {
 	Live     bool
 	ApiKey   string
@@ -54,8 +53,6 @@ func (a *AfricaTalking) SendSms(to, message string) (*AfricaTalkingResponse, err
 	defer resp.Body.Close()
 	var response AfricaTalkingResponse
 
-
-
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
 		b, _ := ioutil.ReadAll(resp.Body)
 
@@ -65,27 +62,23 @@ func (a *AfricaTalking) SendSms(to, message string) (*AfricaTalkingResponse, err
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 
-
 		return nil, errors.New("error converting from json")
 	}
 	return &response, nil
 }
 func (a *AfricaTalking) SendAirtime(airtimeRequest []AfricaTalkingAirtimeRequest) (*AfricaTalkingMessageResponse, error) {
 
-
 	africaTalkingMaps := []map[string]string{}
 	for i, _ := range airtimeRequest {
-	   dataMap:=airtimeRequest[i].ToAfricaTalkingString()
-	   africaTalkingMaps=append(africaTalkingMaps,dataMap)
+		dataMap := airtimeRequest[i].ToAfricaTalkingString()
+		africaTalkingMaps = append(africaTalkingMaps, dataMap)
 
 	}
-	data,err:=ToJson(africaTalkingMaps)
-	if err!=nil {
+	data, err := ToJson(africaTalkingMaps)
+	if err != nil {
 		return nil, err
 	}
-	africaTalkingString:=string(data)
-
-
+	africaTalkingString := string(data)
 
 	body := url.Values{}
 	body.Set("username", a.UserName)
@@ -98,8 +91,6 @@ func (a *AfricaTalking) SendAirtime(airtimeRequest []AfricaTalkingAirtimeRequest
 	defer resp.Body.Close()
 	var response AfricaTalkingMessageResponse
 
-
-
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
 		b, _ := ioutil.ReadAll(resp.Body)
 
@@ -113,12 +104,7 @@ func (a *AfricaTalking) SendAirtime(airtimeRequest []AfricaTalkingAirtimeRequest
 	}
 	return &response, nil
 
-
 }
-
-
-
-
 
 func (a *AfricaTalking) getBaseUrl() string {
 	if !a.Live {
@@ -129,16 +115,14 @@ func (a *AfricaTalking) getBaseUrl() string {
 	return LiveUrl
 }
 
-
-
 func (a *AfricaTalking) getSmsUrl() string {
 
-	return  a.getBaseUrl()+SMSUrl
+	return a.getBaseUrl() + SMSUrl
 
 }
 func (a *AfricaTalking) getAirtimeUrl() string {
 
-	return  a.getBaseUrl()+AirtimeUrl
+	return a.getBaseUrl() + AirtimeUrl
 
 }
 
@@ -186,10 +170,9 @@ type SMSMessageData struct {
 }
 
 type AfricaTalkingAirtimeRequest struct {
-	PhoneNumber string `json:"phoneNumber"`
-	Currency   string `json:"currency"`
-	Amount float64 `json:"amount"`
-
+	PhoneNumber string  `json:"phoneNumber"`
+	Currency    string  `json:"currency"`
+	Amount      float64 `json:"amount"`
 }
 type AfricaTalkingMessageResponse struct {
 	ErrorMessage  string      `json:"errorMessage"`
@@ -207,28 +190,23 @@ type Responses struct {
 	Discount     string `json:"discount"`
 }
 
-
-
 func (a AfricaTalkingAirtimeRequest) ToAfricaTalkingString() map[string]string {
 	data := map[string]string{
 		"phoneNumber": a.PhoneNumber,
-		"amount":      a.Currency + " " + fmt.Sprintf("%.2f", a.Amount) ,
+		"amount":      a.Currency + " " + fmt.Sprintf("%.2f", a.Amount),
 	}
-	return  data
-
+	return data
 
 }
-
 
 type RequestError struct {
 	StatusCode int
 
 	Message string
-	Url string
+	Url     string
 }
 
 func (r *RequestError) Error() string {
-	return fmt.Sprintf("url is: %s \n status code is: %d \n  and body is : %s",r.Url, r.StatusCode, r.Message)
-
+	return fmt.Sprintf("url is: %s \n status code is: %d \n  and body is : %s", r.Url, r.StatusCode, r.Message)
 
 }
