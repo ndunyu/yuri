@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/golang-jwt/jwt/v4"
 	"log"
 	"math/rand"
 	"net/http"
