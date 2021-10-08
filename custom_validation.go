@@ -2,6 +2,7 @@ package yuri
 
 import (
 	ut "github.com/go-playground/universal-translator"
+	"github.com/go-playground/validator/v10"
 )
 
 func PhoneNumberValidation(fl validator.FieldLevel) bool {
