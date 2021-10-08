@@ -5,6 +5,7 @@ package yuri
 import (
 	"compress/gzip"
 	"encoding/json"
+	"github.com/go-pg/pg/v10"
 	"io"
 	"net/http"
 	"time"

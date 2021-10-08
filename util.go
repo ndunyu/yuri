@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/google/uuid"
 	"log"
 	"math/rand"
 	"net/http"
@@ -16,7 +17,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi"
-	uuid "github.com/satori/go.uuid"
+
 	"github.com/ttacon/libphonenumber"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -343,8 +344,8 @@ func FormatNumberToNationalFormat(phoneNumber, region string) (string, error) {
 
 func CreateGid() string {
 
-	u2 := uuid.NewV4()
 
+	u2 := uuid.New()
 	return u2.String()
 
 }
