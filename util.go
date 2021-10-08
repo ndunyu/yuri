@@ -344,7 +344,6 @@ func FormatNumberToNationalFormat(phoneNumber, region string) (string, error) {
 
 func CreateGid() string {
 
-
 	u2 := uuid.New()
 	return u2.String()
 
