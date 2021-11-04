@@ -8,11 +8,11 @@
 4. Mpesa reversal sdk.
 5. Mpesa C2B sdk.
 
-#Africa Talking Packages:
+# Africa Talking Packages:
 1. Africa Talking buy airtime with golang
 2. Africa Talking send sms services with golang.
 
-#Jenga golang Apis Packages:
+# Jenga golang Apis Packages:
 1. Checking account balance
 2. Golang Jenga api bank to mobile transfer
 3. Golang Jenga api pesalink transfer
