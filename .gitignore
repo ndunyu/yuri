@@ -11,3 +11,4 @@ main.go
 cmd
 cmd/
 cmd/main.go
+.DS_Store
